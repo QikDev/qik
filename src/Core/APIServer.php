@@ -188,9 +188,7 @@ class APIServer
 
 			$this->response->Send();
 		} catch (\Throwable $thrown) {
-			Utility::Dump($thrown);
 			$this->response->SendError($thrown);//$message, $errorCode, $thrown->getTrace(), $responseCode);
-			exit;
 		}
 	}
 
