@@ -1,0 +1,19 @@
+{
+    "name": "mistevs/qik",
+    "description": "A micro PHP API framework",
+    "type": "library",
+    "require": {
+        "php": ">=7"
+    },
+    "authors": [
+        {
+            "name": "Mike Stevens",
+            "email": "mistevs@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Qik\\": "src/"
+        }
+    }
+}

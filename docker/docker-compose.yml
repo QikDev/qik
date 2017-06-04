@@ -1,0 +1,30 @@
+version: '2'
+
+services: 
+    web:
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ../:/var/www/site
+            - ./nginx/site.cfg:/etc/nginx/conf.d/site.conf
+    php: 
+        build:
+            context: ./php
+            dockerfile: ./dockerfile
+        volumes:
+            - ../:/var/www/site
+            - ./php/log.cfg:/usr/local/etc/php-fpm.d/zz-log.conf
+    
+
+    #https://github.com/RobLoach/docker-composer/issues/88
+    composer:
+        image: composer/composer
+        volumes_from: [php]
+        working_dir: /var/www/site
+
+    memcached:
+        image: memcached
+        ports:
+            - "11211:11211"
