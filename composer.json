@@ -2,6 +2,7 @@
     "name": "mistevs/qik",
     "description": "A micro PHP API framework",
     "type": "library",
+    "license": "MIT",
     "require": {
         "php": ">=7"
     },
