@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Qik\\' => array($baseDir . '/src'),
+    'App\\' => array($baseDir . '/app'),
 );

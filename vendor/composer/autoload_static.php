@@ -11,12 +11,20 @@ class ComposerStaticInit9b812d722a29bfbf319cc995df79a13e
         array (
             'Qik\\' => 4,
         ),
+        'A' => 
+        array (
+            'App\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Qik\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 
