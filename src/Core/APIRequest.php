@@ -2,6 +2,8 @@
 
 namespace Qik\Core;
 
+use Qik\Core\{APIReturn};
+
 class APIRequest
 {
 	public $url;
@@ -23,7 +25,7 @@ class APIRequest
 	
 	public function __construct($url = null, $type = 'POST', $contentType = 'application/x-www-form-urlencoded; charset=utf-8', $returnTransfer = true, $timeout = 1000)
 	{
-		$this->return = new xApiReturn();
+		$this->return = new APIReturn();
 		
 		$this->url = $url;
 		$this->type = $type;
@@ -237,7 +239,7 @@ class APIRequest
 	public function Decode($data = null)
 	{
 		//the preg_replace is replacing utf8 BOM invalid json characters
-		return json_decode(xApi::AddSlashes(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data)));
+		return json_decode(Qik::AddSlashes(preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data)));
 	}
 	
 	public function Send($followRedirect = true)
@@ -272,24 +274,24 @@ class APIRequest
 			$body = substr($success, $headerSize);
 
 			$metaData = new stdClass();
-			$metaData->headers = addcslashes($headers, xApi::$slashChars);
+			$metaData->headers = addcslashes($headers, Qik::$slashChars);
 			$metaData->status = curl_getinfo($this->handle, CURLINFO_HTTP_CODE);
-			$metaData->statusText = xUtility::GetHTTPStatusText($metaData->status);
+			$metaData->statusText = Qik::GetHTTPStatusText($metaData->status);
 			$metaData->contentType = curl_getinfo($this->handle, CURLINFO_CONTENT_TYPE);
 			
-			$this->SetRaw(xApi::AddSlashes(htmlentities($success, ENT_QUOTES, 'UTF-8')));
+			$this->SetRaw(Qik::AddSlashes(htmlentities($success, ENT_QUOTES, 'UTF-8')));
 			
 			if (stristr($metaData->contentType, 'application/json'))
 			{
 				$data = $this->Decode($body);
 				
 				if (isset($data->data))
-					$this->return = new xApiReturn($data);
+					$this->return = new APIResponse($data);
 				else
 					$this->return->data = $data;
 			}
 			else
-				$this->return->data = xApi::AddSlashes($body);
+				$this->return->data = Qik::AddSlashes($body);
 				
 			$this->return->metaData = $metaData;
 			$this->return->body = $body;
@@ -329,7 +331,7 @@ class APIRequest
 			if ($this->return === false || $this->return === null)
 			{
 				$this->SetError('JSON Decode Error #: '.json_last_error());
-				$this->SetError('JSON Decode Error Message: '.xJson::GetLastErrorMsg());
+				$this->SetError('JSON Decode Error Message: '.json_last_error_msg());
 				
 				//$info = curl_getinfo($this->handle); 
 				//$this->SetError('Request to '.$info['url'].' failed to send');
@@ -354,17 +356,6 @@ class APIRequest
 	public function SetRaw($raw = null)
 	{
 		$this->raw = $raw;
-		return true;
-	}
-
-	public function DisplayErrors()
-	{
-		foreach ($this->errors as $key=>$error)
-		{
-			$notice = new ErrorNotice('Error', $error);
-			$notice->Send();
-		}
-
 		return true;
 	}
 	
@@ -417,10 +408,7 @@ class APIRequest
 		if (empty($key))
 			return;
 		
-		if (isset($this->return->metaData->$key))
-			return stripcslashes($this->return->metaData->$key);
-		else
-			return;
+		return stripcslashes($this->return->metaData->$key) ?? null;
 	}
 
 	public function GetReturnData($key = null)
@@ -436,9 +424,7 @@ class APIRequest
 				return $this->return->data;
 		}
 		
-		if (isset($this->return) && isset($this->return->data) && isset($this->return->data->{$key}))
-			return $this->return->data->{$key};
-		else
-			return;
-	}	
+		return $this->return->data->{$key} ?? null;
+
+	}
 }
