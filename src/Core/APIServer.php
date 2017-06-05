@@ -191,6 +191,9 @@ class APIServer
 
 	public function Serve()
 	{
+		echo 'hello!';
+		exit;
+		
 		try {
 			if (APIServer::IsDevelopment())
 				$this->disableCache = true;
