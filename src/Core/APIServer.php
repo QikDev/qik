@@ -216,9 +216,6 @@ class APIServer
 			}
 
 			$method = ucfirst($this->command).$this->requestType;
-			Utility::Dump($method);
-			Utility::Dump($this->controller);
-			exit;
 			if (!method_exists($this->controller, $method))
 				throw new Resource\MethodNotAllowed();
 			
