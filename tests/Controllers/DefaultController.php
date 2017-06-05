@@ -1,9 +1,8 @@
 <?php 
 
-namespace App\Controllers;
+namespace Tests\Controllers;
 
-use Qik\Core\{APIController, APIServer};
-use Qik\Utility\{Utility};
+use Qik\Core\{APIController};
 
 class DefaultController extends APIController
 {

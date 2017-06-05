@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-class Test
+class App
 {
 	
 }
