@@ -3,6 +3,7 @@
 namespace Qik\Core;
 
 use Qik\Qik;
+use Qik\Core\APIServer;
 use Qik\Utility\{Utility};
 use Qik\Debug\{Debugger, Logger};
 
@@ -164,7 +165,7 @@ class APIResponse
 
 	public function GetDebugInformation()
 	{
-		if (!Qik::IsDeveloper() && !Qik::IsDevelopment())
+		if (!APIServer::IsClientDeveloper() && !APIServer::IsDevelopment())
 			return;
 
 		$timings = Debugger::GetTimestamps();
@@ -192,7 +193,7 @@ class APIResponse
 
 		$disableCache = false;
 			
-		//if (Qik::IsDeveloper() || Qik::IsDevelopment())
+		//if (APIServer::IsClientDeveloper() || APIServer::IsDevelopment())
 		//	$disableCache = xGet::Get('_disableCache', false);
 		
 		//if ($disableCache)
@@ -221,7 +222,9 @@ class APIResponse
 			$data['errors'] = $this->errors;
 			$data['data'] = $this->data;
 
-			if (Qik::IsDeveloper() || Qik::IsDevelopment())
+
+			echo 'checking is client develper';
+			if (APIServer::IsClientDeveloper() || APIServer::IsDevelopment())
 				$data['debug'] = $this->GetDebugInformation();
 		}
 		else

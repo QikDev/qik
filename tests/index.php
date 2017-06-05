@@ -6,12 +6,13 @@ use Qik\Core\APIServer;
 use Qik\Debug\Debugger;
 use Tests\Controllers;
 
+$server = new APIServer();
+$server->RegisterDeveloper('172.19.0.1', 'Mike Stevens');
+$server->RegisterController(new Controllers\DefaultController);
+
 Debugger::SetTimestamp('init');
 
-$server = new APIServer();
 $server->Configure();
-$server->RegisterDeveloper('127.0.0.1', 'Mike Stevens');
-$server->RegisterController(new Controllers\DefaultController);
 $server->Serve();
 
 Debugger::SetTimestamp('denit');

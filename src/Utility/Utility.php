@@ -3,12 +3,13 @@
 namespace Qik\Utility;
 
 use Qik\Qik;
+use Qik\Core\APIServer;
 
 class Utility
 {
 	public static function Dump($array = null, $return = false, $bypass = false)
 	{		
-		if (Qik::GetEnv() == 'production' && !$bypass)
+		if (APIServer::GetEnv() == 'production' && !$bypass)
 			return;
 			
 		if (empty($array))

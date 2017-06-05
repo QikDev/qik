@@ -2,7 +2,7 @@
 
 namespace Qik\Debug;
 
-use Qik\Qik;
+use Qik\Core\APIServer;
 
 class Debugger
 {
@@ -10,7 +10,7 @@ class Debugger
 
 	public static function SetTimestamp($tag = null)
 	{
-		if (!Qik::IsDeveloper())
+		if (!APIServer::IsClientDeveloper())
 			return false;
 
 		array_push(self::$timestamps, array(
