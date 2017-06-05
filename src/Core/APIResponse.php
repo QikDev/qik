@@ -46,7 +46,7 @@ class APIResponse
 					'message'=>$message
 				);
 
-		if (Qik::IsDevelopment())
+		if (APIServer::IsDevelopment())
 		{
 			$error['trace'] = $thrown->getTrace();
 			$error['internalMessage'] = method_exists($thrown, 'getInternalMessage') ? $thrown->getInternalMessage() : $thrown->getMessage();
@@ -169,7 +169,6 @@ class APIResponse
 			return;
 
 		$timings = Debugger::GetTimestamps();
-		//$db = xDBControl::GetControl();
 
 		return array(
 			'timings' => $timings/*,
@@ -178,9 +177,6 @@ class APIResponse
 				'hits' => $_SESSION['_cacheHits'],
 				'misses' => $_SESSION['_cacheMisses'],
 				'uncached' => isset($_SESSION['_cacheFails']) ? $_SESSION['_cacheFails'] : 0
-			),
-			'queries' => array(
-				'all' => $db->ReturnQueries()
 			)*/
 		);
 	}
@@ -238,8 +234,6 @@ class APIResponse
 		//echo 'cache length : '.$cacheLength.'<br />';
 		if ($cacheLength && $cacheLength > 0 && strtoupper($_SERVER['REQUEST_METHOD']) == 'GET')
 		{
-			//xUtility::Dump($data);
-			//exit;
 			//$key = xApi::GetCacheKey();
 			//xDeveloper::Log('Setting cache for '.$key.' : '.$encoded, 'api:cache');
 			//xCache::Set($key, $encoded, $cacheLength);
@@ -250,14 +244,9 @@ class APIResponse
 		
 		$strlen = strlen($encoded);
 		$mbStrlen = mb_strlen($encoded, 'UTF-8');
-		//header('Content-Length: '.($strlen > $mbStrlen ? $strlen : $mbStrlen));
 		$this->AddHeader('Content-Length', ($strlen > $mbStrlen ? $strlen : $mbStrlen));
 		
-
-		//echo mb_strlen($encoded);
 		echo trim($encoded);
-		//xUtility::Dump(json_decode($encoded));
-
 		exit;
 	}	
 }

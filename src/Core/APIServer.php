@@ -35,6 +35,11 @@ class APIServer
 		return $this->response;
 	}
 
+	public function RegisterCache($cache)
+	{
+		
+	}
+
 	public function RegisterController($controller) 
 	{
 		$this->controllers[strtolower(Utility::GetBaseClassNameFromNamespace(get_class($controller)))] = $controller; //store them so we can use O(1) lookups
