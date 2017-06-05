@@ -222,8 +222,6 @@ class APIResponse
 			$data['errors'] = $this->errors;
 			$data['data'] = $this->data;
 
-
-			echo 'checking is client develper';
 			if (APIServer::IsClientDeveloper() || APIServer::IsDevelopment())
 				$data['debug'] = $this->GetDebugInformation();
 		}
