@@ -17,6 +17,8 @@ class APIServer
 	private		$_vars, $version, $controller, $command, $method, $requestType;
 	private 	$controllers = array();
 	private 	$disableCache;
+	private 	$postCacheCallback
+
 
 	protected 	$response;
 
