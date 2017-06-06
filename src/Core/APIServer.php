@@ -189,6 +189,11 @@ class APIServer
 		return md5($key);
 	}
 
+	public function PostCache($callback) 
+	{
+		$this->postCacheCallback = $callback;
+	}
+
 	public function Serve()
 	{
 		try {
@@ -196,13 +201,16 @@ class APIServer
 				$this->disableCache = true;
 			
 			if (!$this->ParseURI())
-				throw new Resource\NotFound();
+				throw new Resource\Invalid();
 
 			if (strtoupper($this->requestType) == 'GET')
 			{
 				$key = $this->GetCacheKey();
 				//$this->SendCachedResponse();
 			}
+
+			if (is_callable($this->postCacheCallback))
+				$this->postCacheCallback();
 
 			if (!isset($this->controllers[strtolower($this->controller)]))
 				throw new Resource\NotFound();
