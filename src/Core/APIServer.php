@@ -212,7 +212,7 @@ class APIServer
 			}
 
 			if (is_callable($this->postCacheCallback))
-				$this->postCacheCallback->__invoke();
+				($this->postCacheCallback)();
 
 			if (!isset($this->controllers[strtolower($this->controller)]))
 				throw new Resource\NotFound();

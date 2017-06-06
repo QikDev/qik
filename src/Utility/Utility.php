@@ -68,6 +68,9 @@ class Utility
 
 	public static function GetBaseClassNameFromNamespace($namespace = null) 
 	{
+		if (is_object($namespace))
+			$namespace = get_class($namespace);
+		
 		$parts = explode('\\', $namespace);
 		$parts = array_reverse($parts);
 
