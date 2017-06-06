@@ -8,9 +8,9 @@ class APIInternalException extends APIException
 {
 	public function __construct($internalMessage = null, $errorCode = null, $responseCode = 500, $externalMessage = null)
 	{
-		$this->internalMessage = $internalMessage = (!empty($internalMessage) ? $this->internalMessage : 'An unknown error occurred');
-		$this->externalMessage = $externalMessage = (!empty($externalMessage) ? $this->externalMessage : 'An unknown error occurred');
+		$iMessage = (!empty($internalMessage) ? $this->internalMessage : 'An unknown error occurred');
+		$eMessage = (!empty($externalMessage) ? $this->externalMessage : 'An unknown error occurred');
 
-		return parent::__construct($externalMessage, $errorCode, $responseCode, $internalMessage);
+		return parent::__construct($eMessage, $errorCode, $responseCode, $iMessage);
 	}
 }
