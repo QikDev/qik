@@ -13,13 +13,13 @@ class APIException extends \Exception
 
 	public function __construct($message = null, $errorCode = null, $responseCode = null, $internalMessage = '', Throwable $previous = null) 
 	{
-		$message = $this->message = $message ?? $this->message ?? 'An unknown exception occurred';
-		$errorCode = $this->errorCode = $errorCode ?? $this->errorCode ?? 0;
-		$responseCode = $this->responseCode = $responseCode ?? $this->responseCode ?? 500;
+		$iMessage = (!empty($message) ? $message : (!empty($this->message) ? $this->message : 'An unknown exception occurred'));
+		$iErrorCode = (!empty($errorCode) ? $errorCode : (!empty($this->errorCode) ? $this->errorCode : 0));
+		$iResponseCode = (!empty($responseCode) ? $responseCode : (!empty($this->responseCode) ? $this->responseCode : 500));
 
 		$this->internalMessage = $internalMessage;
 
-		return parent::__construct($message, $errorCode, $previous);
+		return parent::__construct($iMessage, $errorCode, $previous);
 	}
 
 	public function getResponseCode()
