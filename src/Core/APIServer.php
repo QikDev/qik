@@ -17,7 +17,7 @@ class APIServer
 	private		$_vars, $version, $controller, $command, $method, $requestType;
 	private 	$controllers = array();
 	private 	$disableCache;
-	private 	$postCacheCallback;
+	public 	$postCacheCallback;
 
 
 	protected 	$response;
@@ -191,7 +191,7 @@ class APIServer
 		return md5($key);
 	}
 
-	public function PostCache($callback) 
+	public function RegisterPostCache($callback) 
 	{
 		$this->postCacheCallback = $callback;
 	}
@@ -212,7 +212,7 @@ class APIServer
 			}
 
 			if (is_callable($this->postCacheCallback))
-				$this->postCacheCallback();
+				$this->postCacheCallback->__invoke();
 
 			if (!isset($this->controllers[strtolower($this->controller)]))
 				throw new Resource\NotFound();

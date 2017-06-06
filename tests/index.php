@@ -12,6 +12,11 @@ $server->RegisterController(new Controllers\DefaultController);
 
 Debugger::SetTimestamp('init');
 
+$server->RegisterPostCache(function() {
+	echo 'post cache callback';
+	exit;
+});
+
 $server->Configure();
 $server->Serve();
 
