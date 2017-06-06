@@ -17,7 +17,8 @@ class APIServer
 	private		$_vars, $version, $controller, $command, $method, $requestType;
 	private 	$controllers = array();
 	private 	$disableCache;
-	public 	$postCacheCallback;
+
+	public 		$postCacheCallback;
 
 
 	protected 	$response;
@@ -113,6 +114,7 @@ class APIServer
 				$json = file_get_contents('php://input');
 				$this->_requestData = json_decode($json);
 			}
+
 			$data = Utility::ConvertObjectToArray($this->_requestData);
 			if (count($data) > 0)
 				$variables = array_merge($variables, $data);
@@ -167,7 +169,7 @@ class APIServer
 				if (empty($var))
 					return $default;
 
-				if ($decodeJSON && $obj = Utility::IsJSON($var)) //IsJSON() will return a decoded json string as an object or false
+				if ($decodeJSON && $obj = Utility::IsJSON($var) && substr($var, 0, 1) == '{') //IsJSON() will return a decoded json string as an object or false
 					return $obj;
 
 				return $var;
