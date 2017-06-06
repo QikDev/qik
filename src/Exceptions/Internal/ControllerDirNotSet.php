@@ -2,10 +2,8 @@
 
 namespace Qik\Exceptions\Internal;
 
-use Qik\Exceptions\APIError;
+use Qik\Exceptions\APIInternalException;
 
-class ControllerDirNotSet extends APIError {
-	protected $responseCode = 500;
-	protected $errorCode = 0;
+class ControllerDirNotSet extends APIInternalException {
 	protected $internalMessage = 'Controller directory not set';
 }
