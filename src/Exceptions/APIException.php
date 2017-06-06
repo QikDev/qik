@@ -26,4 +26,9 @@ class APIException extends \Exception
 	{
 		return $this->responseCode;
 	}
+
+	public function getInternalMessage()
+	{
+		return $this->internalMessage;
+	}
 }
