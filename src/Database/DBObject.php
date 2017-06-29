@@ -62,6 +62,14 @@ class DBObject
 		$this->table = strtolower($this->prefix.Utility::GetBaseClassNameFromNamespace($this));
 	}
 
+	public function GetTable()
+	{
+		if (empty($this->table))
+			$this->DetermineTable();
+		
+		return $this->table;
+	}
+
 	public function LoadColumns($refresh = false)
 	{
 		$sql = 'DESCRIBE '.$this->table;
