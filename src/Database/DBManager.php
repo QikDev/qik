@@ -27,9 +27,6 @@ class DBManager
 		if ((!$db || empty($db)))
 			return array_pop(self::$connections);
 
-		var_dump(self::$connections);
-		Utility::Dump(self::$connections);
-
 		if (!isset(self::$connections[$db]))
 			throw new DbManagerMissingConnection('Database manager missing connection for database '.($db ?? '(NONE)'));
 
