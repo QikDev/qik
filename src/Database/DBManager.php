@@ -24,9 +24,11 @@ class DBManager
 
 	public static function GetConnection($db = null)
 	{
-		if ((!$db || empty($db)) && count(self::$connections) == 1)
+		if ((!$db || empty($db)))
 			return array_pop(self::$connections);
 
+		Utility::Dump(self::$connections);
+		exit;
 		if (!isset(self::$connections[$db]))
 			throw new DbManagerMissingConnection('Database manager missing connection for database '.($db ?? '(NONE)'));
 
