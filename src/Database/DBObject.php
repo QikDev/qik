@@ -30,7 +30,8 @@ class DBObject
 
 		$this->primaryKeyValue = $pk;
 
-		$this->Get();
+		if (!empty($pk))
+			$this->Get();
 
 
 		//$this->{$this->primaryKeyColumn} = $pk;
@@ -117,7 +118,7 @@ class DBObject
 
 	public function GetRecords()
 	{
-		
+
 	}
 
 	public function GetAll()
