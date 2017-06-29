@@ -134,15 +134,6 @@ class DBObject
 		return $this->Query('SELECT * FROM '.$this->table)->FetchAll(\PDO::FETCH_ASSOC);
 	}
 
-	public static function IsFieldUnique(string $field, $value)
-	{
-		$user = new User();
-
-		$results = DBQuery::Build()->from($user->GetTable())->where($field, $value)->Fetch();
-		Utility::Dump($results);
-		exit;
-	}
-
 	public function Insert()
 	{
 		$this->LoadColumns();
