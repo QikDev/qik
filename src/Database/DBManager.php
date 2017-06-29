@@ -3,6 +3,7 @@
 namespace Qik\Database;
 
 use Qik\Utility\Utility;
+use Qik\Exceptions\Internal\{DBManagerMissingConnection};
 
 class DBManager
 {
