@@ -14,6 +14,8 @@ class DBManager
 		try {
 			$connection = new DBConnection($host, $user, $password, $db, $type);
 			self::$connections[$db] = $connection;
+
+			return $connection;
 		} catch (DBConnectException $ex) {
 			throw $ex;
 		}
