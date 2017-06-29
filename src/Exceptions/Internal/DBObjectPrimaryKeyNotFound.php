@@ -1,6 +1,6 @@
 <?php 
 
-namespace Turnkey\Exceptions;
+namespace Qik\Exceptions\Internal;
 
 use Qik\Exceptions\APIInternalException;
 

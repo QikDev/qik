@@ -1,6 +1,6 @@
 <?php 
 
-namespace Qik\Exceptions;
+namespace Qik\Exceptions\Internal;
 
 use Qik\Exceptions\APIInternalException;
 
