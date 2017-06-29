@@ -14,5 +14,8 @@
             "Qik\\": "src/",
             "Tests\\": "tests/"
         }
+    },
+    "require": {
+        "fpdo/fluentpdo": "1.1.*"
     }
 }
