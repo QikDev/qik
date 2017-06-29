@@ -21,7 +21,7 @@ class DBManager
 
 	public static function GetConnection($db = null)
 	{
-		if (!$db && count(self::$connections) == 1)
+		if ((!$db || empty($db)) && count(self::$connections) == 1)
 			return array_pop(self::$connections);
 
 		return self::$connections[$db];

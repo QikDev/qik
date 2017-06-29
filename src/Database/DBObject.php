@@ -115,6 +115,11 @@ class DBObject
 		return self::$connection->Export('SELECT * FROM '.$this->table, ucwords(str_replace('_', ' ', $this->table)));
 	}
 
+	public function GetRecords()
+	{
+		
+	}
+
 	public function GetAll()
 	{
 		return $this->Query('SELECT * FROM '.$this->table)->FetchAll(\PDO::FETCH_ASSOC);
