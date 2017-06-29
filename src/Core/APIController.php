@@ -4,6 +4,7 @@ namespace Qik\Core;
 
 use Qik\Core\{APIControllerInterface, APIServer};
 use Qik\Utility\{Utility};
+use Qik\Exceptions\APIInternalException;
 
 abstract class APIController implements APIControllerInterface
 {
