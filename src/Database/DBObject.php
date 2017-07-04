@@ -78,7 +78,7 @@ class DBObject implements APIObject
 		if (!isset(self::$columns[$this->table]))
 			self::$columns[$this->table] = [];
 		elseif (!$refresh)
-			return self::$columns;
+			return self::$columns[$this->table];
 
 		foreach ($columns as $column)
 			self::$columns[$this->table][$column['Field']] = $column;
@@ -88,20 +88,12 @@ class DBObject implements APIObject
 
 	public function GetModel() : array
 	{
-		if (count(self::$columns) <= 0)
-			$this->LoadColumns();
-
-		Utility::Dump(self::$columns);
-		exit;
+		return $this->GetColumns();
 	}
 
 	public function GetPublicModel() : array
 	{
-		if (count(self::$columns) <= 0)
-			$this->LoadColumns();
-
-		Utility::Dump(self::$columns);
-		exit;
+		return $this->GetColumns();
 	}
 
 	public function GetColumns($table = null, $load = true)
