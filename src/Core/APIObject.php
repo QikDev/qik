@@ -2,7 +2,7 @@
 
 namespace Qik\Core;
 
-interface APIPObject
+abstract class APIPObject
 {
-	constant $model;
+	protected $model;
 }
