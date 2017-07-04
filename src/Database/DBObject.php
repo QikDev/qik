@@ -126,7 +126,7 @@ class DBObject implements APIObject
 	{
 		$columns = $this->GetColumns();
 		$model = array();
-		
+
 		foreach ($columns as $key=>$column)
 		{
 			if (isset($column['Attributes']['accessibility']) && $column['Attributes']['accessibility'] == 'public')
@@ -177,6 +177,11 @@ class DBObject implements APIObject
 	public function GetAll() : array
 	{
 		return $this->Query('SELECT * FROM '.$this->table)->FetchAll(\PDO::FETCH_ASSOC);
+	}
+
+	public function IsFieldUnique(string $field, $value)
+	{
+		return !DBQuery::Build()->from($this->GetTable())->where($field.' = ?', $value)->Fetch();
 	}
 
 	public function Insert() : bool
