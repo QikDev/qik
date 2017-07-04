@@ -2,11 +2,12 @@
 
 namespace Qik\Database;
 
+use Qik\Core\APIObject;
 use Qik\Utility\Utility;
 use Qik\Database\DBManager;
 use Qik\Exceptions\Internal\{DBObjectPrimaryKeyNotFound, DbObjectColumnNotFound, DBObjectInsertError};
 
-class DBObject
+class DBObject implements APIObject
 {
 	private static $columns = [];
 	private static $connection;
