@@ -4,5 +4,5 @@ namespace Qik\Core;
 
 interface APIPObject
 {
-	public $model;
+	constant $model;
 }
