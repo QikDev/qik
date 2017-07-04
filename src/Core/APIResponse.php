@@ -82,9 +82,33 @@ class APIResponse
 	
 	public function AddData($key = null, $value = null)
 	{
-		if (is_object($key))
+		if (is_array($key) && empty($val))
 		{
-			if (!method_exists($key, 'GetModel'))
+			foreach ($key as $i=>$row)
+			{
+				$new = [];
+				foreach ($row as $k=>$val)
+				{
+					$data = [];
+					if (is_object($val) && method_exists($val, 'GetPublicModel'))
+					{
+						$model = $val->GetPublicModel();
+						foreach ($val as $a=>$piece)
+						{
+							if (isset($model[$a]))
+								$data[$a] = $piece;
+						}
+					}
+
+					$new[strtolower($k)] = $data;
+				}
+
+				$this->AddData($i, $new);
+			}
+		}
+		elseif (is_object($key))
+		{
+			if (!method_exists($key, 'GetPublicModel'))
 				throw new APIInternalError('Trying to add '.get_class($key).' to API response without defining proper model definition.');
 
 			$model = $key->GetPublicModel();
@@ -104,13 +128,15 @@ class APIResponse
 
 			foreach ($value as $k=>$val)
 			{
-				if (is_array($val) || !is_string($val))
+				if (is_object($val))
+					$this->AddData($val);
+				elseif (is_array($val) || !is_string($val))
 					$valArray[trim($k)] = $val;
 				else
 					$valArray[trim($k)] = trim($val);
 			}
-				
-			return $this->data[trim($key)] = $valArray;
+
+			$this->data[trim($key)] = $valArray;
 		}
 		elseif (!is_null($value))
 		{

@@ -4,10 +4,10 @@ namespace Qik\Database;
 
 use Qik\Core\APIObject;
 use Qik\Utility\Utility;
-use Qik\Database\{DBManager, DBConnection};
+use Qik\Database\{DBManager, DBConnection, DBObjectIterator};
 use Qik\Exceptions\Internal\{DBObjectPrimaryKeyNotFound, DbObjectColumnNotFound, DBObjectInsertError};
 
-class DBObject implements APIObject
+class DBObject implements APIObject, \IteratorAggregate
 {
 	private static $columns = [];
 	private static $connection;
@@ -29,12 +29,39 @@ class DBObject implements APIObject
 		if (empty($this->table))
 			$this->DetermineTable();
 
-		$this->primaryKeyValue = $pk;
+		if (!is_array($pk) && !is_object($pk))
+			$this->primaryKeyValue = $pk;
 
 		if (!empty($pk))
-			$this->Get();
+			$this->Get($pk);
+	}
 
-		//$this->{$this->primaryKeyColumn} = $pk;
+	public function getIterator() 
+	{
+		return new DBObjectIterator($this->fields);
+	}
+
+	public function __set($key, $val)
+	{
+		$this->fields[$key] = $val;
+	}
+
+	public function __get($key)
+	{
+		return $this->fields[$key];
+	}
+
+	public function SetFields($fields)
+	{
+		foreach ($fields as $key=>$val)
+		{
+			if ($key == $this->primaryKeyColumn)
+				$this->primaryKeyValue = $val;
+			
+			$this->{$key} = $val;
+		}
+
+		return true;
 	}
 
 	public function DeterminePrimaryKey() : bool
@@ -72,13 +99,13 @@ class DBObject implements APIObject
 
 	public function LoadColumns($refresh = false) : array
 	{
-		$sql = 'SHOW FULL COLUMNS FROM '.$this->table;
+		$sql = 'SHOW FULL COLUMNS FROM '.$this->GetTable();
 		$columns = $this->Query($sql)->FetchAll(\PDO::FETCH_ASSOC);
 
-		if (!isset(self::$columns[$this->table]))
-			self::$columns[$this->table] = [];
+		if (!isset(self::$columns[$this->GetTable()]))
+			self::$columns[$this->GetTable()] = [];
 		elseif (!$refresh)
-			return self::$columns[$this->table];
+			return self::$columns[$this->GetTable()];
 
 		foreach ($columns as $column)
 		{
@@ -94,16 +121,16 @@ class DBObject implements APIObject
 				$column['Attributes'][$parts[0]] = $parts[1];
 			}
 
-			self::$columns[$this->table][$column['Field']] = $column;
+			self::$columns[$this->GetTable()][$column['Field']] = $column;
 		}
 			
-		return self::$columns;
+		return self::$columns[$this->GetTable()];
 	}
 
 	public function GetColumns(string $table = null, bool $load = true) : array
 	{
 		if (empty($table))
-			$table = $this->table;
+			$table = $this->GetTable();
 
 		if (isset(self::$columns[$table]))
 			return self::$columns[$table];
@@ -115,6 +142,32 @@ class DBObject implements APIObject
 		}
 
 		return array();
+	}
+
+	public function GetForeignKeys(string $table = null)
+	{
+		if (empty($table))
+			$table = $this->table;
+
+		$sql = 'use INFORMATION_SCHEMA;';
+		$this->Query($sql);
+
+		$sql = 'SELECT 
+					TABLE_NAME,
+					COLUMN_NAME,
+					CONSTRAINT_NAME,
+					REFERENCED_TABLE_NAME,
+					REFERENCED_COLUMN_NAME 
+				FROM 
+					KEY_COLUMN_USAGE
+				WHERE 
+					TABLE_SCHEMA = "local" AND 
+					TABLE_NAME = "'.$this->table.'" AND 
+					REFERENCED_COLUMN_NAME IS NOT NULL';
+
+		$keys = $this->Query($sql)->FetchAll(\PDO::FETCH_ASSOC);
+
+		return $keys;
 	}
 
 	public function GetModel() : array
@@ -212,10 +265,14 @@ class DBObject implements APIObject
 		return true;
 	}
 
-	protected function Get() : stdClass
+	public function Get($pk)
 	{
 		$this->DeterminePrimaryKey();
+		$class = get_class($this);
+		
+		$this->SetFields(DBQuery::Build()->from($this->GetTable())->where($this->primaryKeyColumn.' = ?', $pk)->Fetch());
 
-		return $this->Query('SELECT * FROM '.$this->table.' WHERE '.$this->primaryKeyColumn.' = '.$this->{$this->primaryKeyColumn} = $this->primaryKeyValue)->FetchObject();
+		return $this;
+
 	}
 }
