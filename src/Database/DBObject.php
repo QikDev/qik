@@ -4,7 +4,7 @@ namespace Qik\Database;
 
 use Qik\Core\APIObject;
 use Qik\Utility\Utility;
-use Qik\Database\DBManager;
+use Qik\Database\{DBManager, DBConnection};
 use Qik\Exceptions\Internal\{DBObjectPrimaryKeyNotFound, DbObjectColumnNotFound, DBObjectInsertError};
 
 class DBObject implements APIObject
@@ -18,7 +18,7 @@ class DBObject implements APIObject
 	protected $primaryKeyValue;
 	protected $prefix;
 
-	public function __construct($pk = null, $connection = null)
+	public function __construct($pk = null, DBConnection $connection = null)
 	{
 		if (!empty($connection))
 			self::$connection = $connection;
@@ -96,7 +96,7 @@ class DBObject implements APIObject
 		return $this->GetColumns();
 	}
 
-	public function GetColumns($table = null, $load = true)
+	public function GetColumns(string $table = null, bool $load = true) : array
 	{
 		if (empty($table))
 			$table = $this->table;
@@ -113,7 +113,7 @@ class DBObject implements APIObject
 		return array();
 	}
 
-	public function SetField($column = null, $value = null)
+	public function SetField(string $column = null, $value = null)
 	{
 		$this->LoadColumns();
 
@@ -131,7 +131,7 @@ class DBObject implements APIObject
 		return false;
 	}
 
-	protected function Query($sql)
+	protected function Query(string $sql) : PDOStatement
 	{
 		$this->RequireConnection();
 
@@ -151,12 +151,12 @@ class DBObject implements APIObject
 
 	}
 
-	public function GetAll()
+	public function GetAll() : array
 	{
 		return $this->Query('SELECT * FROM '.$this->table)->FetchAll(\PDO::FETCH_ASSOC);
 	}
 
-	public function Insert()
+	public function Insert() : bool
 	{
 		$this->RequireConnection();
 
@@ -184,7 +184,7 @@ class DBObject implements APIObject
 		return true;
 	}
 
-	protected function Get()
+	protected function Get() : stdClass
 	{
 		$this->DeterminePrimaryKey();
 
