@@ -7,7 +7,7 @@ use Qik\Utility\Utility;
 use Qik\Database\DBManager;
 use Qik\Exceptions\Internal\{DBObjectPrimaryKeyNotFound, DbObjectColumnNotFound, DBObjectInsertError};
 
-class DBObject extends APIObject
+class DBObject implements APIObject
 {
 	private static $columns = [];
 	private static $connection;
@@ -20,8 +20,8 @@ class DBObject extends APIObject
 
 	public function __construct($pk = null, $connection = null)
 	{
-		if (empty($connection) && empty(self::$connection))
-			self::$connection = DBManager::GetConnection();
+		if (!empty($connection))
+			self::$connection = $connection;
 
 		if (empty($this->prefix))
 			$this->prefix = DBManager::GetDefaultTablePrefix();
@@ -34,11 +34,10 @@ class DBObject extends APIObject
 		if (!empty($pk))
 			$this->Get();
 
-
 		//$this->{$this->primaryKeyColumn} = $pk;
 	}
 
-	public function DeterminePrimaryKey()
+	public function DeterminePrimaryKey() : bool
 	{
 		//$this->Query('SELECT * FROM '.$this->table);
 		$sql = 'SHOW KEYS FROM '.$this->table.' WHERE Key_name = \'primary\'';
@@ -63,7 +62,7 @@ class DBObject extends APIObject
 		$this->table = strtolower($this->prefix.Utility::GetBaseClassNameFromNamespace($this));
 	}
 
-	public function GetTable()
+	public function GetTable() : string
 	{
 		if (empty($this->table))
 			$this->DetermineTable();
@@ -71,7 +70,7 @@ class DBObject extends APIObject
 		return $this->table;
 	}
 
-	public function LoadColumns($refresh = false)
+	public function LoadColumns($refresh = false) : array
 	{
 		$sql = 'DESCRIBE '.$this->table;
 		$columns = $this->Query($sql)->FetchAll(\PDO::FETCH_ASSOC);
@@ -79,12 +78,30 @@ class DBObject extends APIObject
 		if (!isset(self::$columns[$this->table]))
 			self::$columns[$this->table] = [];
 		elseif (!$refresh)
-			return true;
+			return self::$columns;
 
 		foreach ($columns as $column)
 			self::$columns[$this->table][$column['Field']] = $column;
 			
-		return true;
+		return self::$columns;
+	}
+
+	public function GetModel() : array
+	{
+		if (count(self::$columns) <= 0)
+			$this->LoadColumns();
+
+		Utility::Dump(self::$columns);
+		exit;
+	}
+
+	public function GetPublicModel() : array
+	{
+		if (count(self::$columns) <= 0)
+			$this->LoadColumns();
+
+		Utility::Dump(self::$columns);
+		exit;
 	}
 
 	public function GetColumns($table = null, $load = true)
@@ -114,14 +131,26 @@ class DBObject extends APIObject
 		return $this->fields[$column] = $value;
 	}
 
+	private function RequireConnection()
+	{
+		if (empty(self::$connection))
+			return self::$connection = DBManager::GetConnection();
+
+		return false;
+	}
+
 	protected function Query($sql)
 	{
+		$this->RequireConnection();
+
 		$statement = self::$connection->Query($sql);
 		return $statement;
 	}
 
 	public function Export()
 	{
+		$this->RequireConnection();
+
 		return self::$connection->Export('SELECT * FROM '.$this->table, ucwords(str_replace('_', ' ', $this->table)));
 	}
 
@@ -137,6 +166,8 @@ class DBObject extends APIObject
 
 	public function Insert()
 	{
+		$this->RequireConnection();
+
 		$this->LoadColumns();
 
 		$columns = array_keys($this->fields);

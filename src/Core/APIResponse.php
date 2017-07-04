@@ -82,7 +82,23 @@ class APIResponse
 	
 	public function AddData($key = null, $value = null)
 	{
-		if (is_array($value))
+		if (is_object($key))
+		{
+			if (!method_exists($key, 'GetModel'))
+				throw new APIInternalError('Trying to add '.get_class($key).' to API response without defining proper model definition.');
+
+			$model = $key->GetPublicModel();
+			$class = strtolower(Utility::GetBaseClassNameFromNamespace($key));
+			$obj = array();
+			foreach ($key as $k=>$v)
+			{
+				if (isset($model[$k]))
+					$obj[$k] = $v;
+			}
+
+			return $this->AddData($class, $obj);
+		}
+		elseif (is_array($value))
 		{
 			$valArray = array();
 

@@ -2,7 +2,8 @@
 
 namespace Qik\Core;
 
-abstract class APIObject
+interface APIObject
 {
-	protected $model;
+	function GetModel() : array;
+	function GetPublicModel() : array;
 }
