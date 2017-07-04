@@ -12,9 +12,9 @@ $server->RegisterDeveloper('172.19.0.1', 'Mike Stevens');
 $server->RegisterController(new Controllers\DefaultController);
 
 $server->RegisterPostCache(function() {
-	//$connection = DBManager::CreateConnection('mysql', 'local', 'local', 'local');
-	//DBManager::SetDefaultTablePrefix('unicef_');
-	//DBQuery::Connect($connection);
+	$connection = DBManager::CreateConnection('mysql', 'local', 'local', 'local');
+	DBQuery::Connect($connection);
+	//DBManager::SetDefaultTablePrefix('qik_');
 });
 
 Debugger::SetTimestamp('init');

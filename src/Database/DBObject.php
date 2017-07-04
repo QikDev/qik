@@ -72,7 +72,7 @@ class DBObject implements APIObject
 
 	public function LoadColumns($refresh = false) : array
 	{
-		$sql = 'DESCRIBE '.$this->table;
+		$sql = 'SHOW FULL COLUMNS FROM '.$this->table;
 		$columns = $this->Query($sql)->FetchAll(\PDO::FETCH_ASSOC);
 
 		if (!isset(self::$columns[$this->table]))
@@ -81,19 +81,23 @@ class DBObject implements APIObject
 			return self::$columns[$this->table];
 
 		foreach ($columns as $column)
+		{
+			$attributes = explode('||', $column['Comment']);
+			$column['Attributes'] = array();
+
+			foreach ($attributes as $attribute)
+			{
+				if (empty($attribute))
+					continue;
+
+				$parts = explode('=', $attribute);
+				$column['Attributes'][$parts[0]] = $parts[1];
+			}
+
 			self::$columns[$this->table][$column['Field']] = $column;
+		}
 			
 		return self::$columns;
-	}
-
-	public function GetModel() : array
-	{
-		return $this->GetColumns();
-	}
-
-	public function GetPublicModel() : array
-	{
-		return $this->GetColumns();
 	}
 
 	public function GetColumns(string $table = null, bool $load = true) : array
@@ -111,6 +115,25 @@ class DBObject implements APIObject
 		}
 
 		return array();
+	}
+
+	public function GetModel() : array
+	{
+		return $this->GetColumns();
+	}
+
+	public function GetPublicModel() : array
+	{
+		$columns = $this->GetColumns();
+		$model = array();
+		
+		foreach ($columns as $key=>$column)
+		{
+			if (isset($column['Attributes']['accessibility']) && $column['Attributes']['accessibility'] == 'public')
+				$model[$key] = $column;
+		}
+
+		return $model;
 	}
 
 	public function SetField(string $column = null, $value = null)
@@ -131,7 +154,7 @@ class DBObject implements APIObject
 		return false;
 	}
 
-	protected function Query(string $sql) : PDOStatement
+	protected function Query(string $sql) : \PDOStatement
 	{
 		$this->RequireConnection();
 

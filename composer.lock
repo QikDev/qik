@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "7d3976608c1aeb8981592875dc08c067",
+    "content-hash": "8ae45e5e4a29235cea794d70619fbe6d",
     "packages": [
         {
             "name": "fpdo/fluentpdo",
@@ -43,13 +44,15 @@
                 "dbal",
                 "pdo"
             ],
-            "time": "2016-07-08 13:40:45"
+            "time": "2016-07-08T13:40:45+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }

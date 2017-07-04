@@ -1,0 +1,61 @@
+version: '2'
+
+services: 
+    web:
+        container_name: qik-web
+        
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./tests:/var/www/tests
+            - ./vendor:/var/www/vendor
+            - ./src:/var/www/src
+            - ./docker/nginx/api.conf:/etc/nginx/conf.d/api.conf
+    php: 
+        container_name: qik-php
+        
+        build:
+            context: ./docker/php
+            dockerfile: ./dockerfile
+        volumes:
+            - ./tests:/var/www/tests
+            - ./vendor:/var/www/vendor
+            - ./src:/var/www/src
+            - ./docker/php/log.cfg:/usr/local/etc/php-fpm.d/zz-log.conf
+
+    mysql:
+        container_name: qik-mysql
+
+        image: mysql
+        volumes:
+            - './docker/mysql/data:/var/lib/mysql'
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: local
+            MYSQL_USER: local
+            MYSQL_PASSWORD: local
+            MYSQL_ROOT_PASSWORD: local
+
+    phpmyadmin:
+        container_name: qik-phpmyadmin
+
+        image: phpmyadmin/phpmyadmin
+        environment:
+            #- PMA_ARBITRARY=1
+            - PMA_HOST=mysql
+            - PMA_USER=local
+            - PMA_PASSWORD=local
+        restart: always
+        ports:
+            - 8080:80
+        volumes:
+            - /sessions
+            - ./docker/phpmyadmin/nginx.conf:/etc/nginx.conf
+
+    #memcached:
+    #    image: memcached
+    #    ports:
+    #        - "11211:11211"

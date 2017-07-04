@@ -11,11 +11,11 @@ class DefaultController extends APIController
 {
 	public function GET()
 	{
-		$object = new Object();
-		$object->testing1 = 'testing';
-		$object->testing20 = 'testing3';
-		$object->testing2 = 'testing3';
+		$obj = new Object();
+		$obj->id = 27;
+		$obj->col1 = 'testing22222';
+		$obj->col2 = 'testing22222';
 
-		$this->response->AddData($object);
+		$this->response->AddData($obj);
 	}
 }
