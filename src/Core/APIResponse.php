@@ -79,6 +79,26 @@ class APIResponse
 		else
 			return false;
 	}
+
+	public function FilterModel($object, $stuff = false)
+	{
+		$data = [];
+		if (is_object($object) && method_exists($object, 'GetPublicModel'))
+		{
+			$model = $object->GetPublicModel();
+			foreach ($object as $a=>$piece)
+			{
+				if (is_object($piece))
+					$data[$a] = $this->FilterModel($piece, true);
+				elseif (isset($model[$a]))
+					$data[$a] = $piece;
+			}
+		}
+		else
+			$data = $object;
+
+		return $data;
+	}
 	
 	public function AddData($key = null, $value = null)
 	{
@@ -89,17 +109,7 @@ class APIResponse
 				$new = [];
 				foreach ($row as $k=>$val)
 				{
-					$data = [];
-					if (is_object($val) && method_exists($val, 'GetPublicModel'))
-					{
-						$model = $val->GetPublicModel();
-						foreach ($val as $a=>$piece)
-						{
-							if (isset($model[$a]))
-								$data[$a] = $piece;
-						}
-					}
-
+					$data = $this->FilterModel($val);
 					$new[strtolower($k)] = $data;
 				}
 

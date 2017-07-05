@@ -11,9 +11,6 @@ class DBResult
 		if (empty($results) || empty($objects))
 			return array();
 
-		if (empty($results))
-			$results = $statement->FetchAll();
-
 		$baseObjects = [];
 		$columns = [];
 		foreach ($objects as $object)
@@ -27,7 +24,6 @@ class DBResult
 			}
 		}
 
-
 		$return = [];
 		foreach ($results as $result)
 		{
@@ -37,12 +33,31 @@ class DBResult
 				if (strpos($key, '_') > -1)
 				{
 					$reversed = strrev($key);
-
 					$parts = explode('_', $reversed);
 					$field = strrev(array_shift($parts));
-					$table = strrev(implode('_', $parts));
+					$class = strrev(implode('_', $parts));
+					$subclass = '';
 
-					$objectified[ucfirst($table)]->{$field} = $val;
+					//we're using __ to denote aliases of the same object so we need to handle them specially
+					if (strpos($class, '__') > -1)
+					{
+						$parts = explode('__', $class);
+						$class = $parts[0];
+						$subclass = $parts[1];
+					}
+
+					if (!empty($subclass))
+					{
+						if (!isset($objectified[ucfirst($class)]->{$subclass}))
+						{
+							$name = get_class($objectified[ucfirst($class)]);
+							$objectified[ucfirst($class)]->{$subclass} = new $name;
+						}
+
+						$objectified[ucfirst($class)]->{$subclass}->{$field} = $val;
+					}
+					else
+						$objectified[ucfirst($class)]->{$field} = $val;
 				}
 				elseif (isset($columns[$key]) && !isset($objectified[$columns[$key]]->{$key}))
 					$objectified[ucfirst($columns[$key])]->{$key} = $val;
