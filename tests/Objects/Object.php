@@ -7,8 +7,4 @@ use Qik\Utility\Utility;
 
 class Object extends DBObject
 {
-	public function __construct($pk = null)
-	{
-		
-	}
 }

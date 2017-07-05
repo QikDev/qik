@@ -6,6 +6,18 @@ use Qik\Utility\{Utility};
 
 class DBResult
 {
+	private $objects = [];
+
+	public function __construct($objects = null)
+	{
+		$this->objects = $objects;
+	}
+
+	public function GetObjects()
+	{
+		return $this->objects;
+	}
+
 	public static function CreateObjects($results, array $objects)
 	{
 		if (empty($results) || empty($objects))
@@ -66,7 +78,7 @@ class DBResult
 			array_push($return, $objectified);
 		}
 
-		return $return;
+		return new DBResult($return);
 	}
 
 	public static function Objectify()
@@ -78,6 +90,4 @@ class DBResult
 	{
 
 	}
-
-
 }

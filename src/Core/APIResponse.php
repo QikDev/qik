@@ -102,9 +102,15 @@ class APIResponse
 	
 	public function AddData($key = null, $value = null)
 	{
-		if (is_array($key) && empty($val))
+		if ((is_object($value) && strtolower(Utility::GetBaseClassNameFromNamespace($value)) == 'dbresult') || (is_object($key) && strtolower(Utility::GetBaseClassNameFromNamespace($key)) == 'dbresult'))
 		{
-			foreach ($key as $i=>$row)
+			if (is_object($key))
+				$objects = $key->GetObjects();
+			else
+				$objects = $value->GetObjects();
+
+			$add = [];
+			foreach ($objects as $i=>$row)
 			{
 				$new = [];
 				foreach ($row as $k=>$val)
@@ -113,8 +119,14 @@ class APIResponse
 					$new[strtolower($k)] = $data;
 				}
 
-				$this->AddData($i, $new);
+				if (is_object($value) && !empty($key))
+					$add[$i] = $new;
+				else
+					$this->AddData($i, $new);
 			}
+
+			if (is_object($value) && !empty($key))
+				$this->AddData($key, $add);
 		}
 		elseif (is_object($key))
 		{
