@@ -16,6 +16,12 @@
         }
     },
     "require": {
-        "fpdo/fluentpdo": "1.1.*"
-    }
+        "mistevs/fluentpdo": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url" : "/Users/michaelstevens/Repositories/fluentpdo"
+        }
+    ]
 }

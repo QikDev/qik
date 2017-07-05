@@ -243,6 +243,25 @@ class DBObject implements APIObject, \IteratorAggregate
 
 		$this->LoadColumns();
 
+		$statement = DBQuery::Build()->insertInto($this->GetTable(), $this->fields);
+		$pk = $statement->Execute();
+
+		Utility::Dump($statement->GetPDO());
+		Utility::Dump($statement);
+		exit;
+
+		if (!$pk)
+		{
+			$errorCode = $statement->errorCode();
+			$errorInfo = $statement->errorInfo();
+			throw new DBObjectInsertError('DBObject insertion error '.$errorInfo[0].' '.$errorInfo[1].': '.$errorInfo[2]);
+		}
+
+		
+		$this->{$this->primaryKeyColumn} = $pk;
+		$this->primaryKeyValue = $pk;
+
+		/*
 		$columns = array_keys($this->fields);
 
 		$keys = [];
@@ -257,10 +276,9 @@ class DBObject implements APIObject, \IteratorAggregate
 		
 		if (!$statement->Execute($values))
 		{
-			$errorCode = $statement->errorCode();
-			$errorInfo = $statement->errorInfo();
-			throw new DBObjectInsertError('DBObject insertion error '.$errorInfo[0].' '.$errorInfo[1].': '.$errorInfo[2]);
+			
 		}
+		*/
 
 		return true;
 	}

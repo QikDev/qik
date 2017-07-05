@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ae45e5e4a29235cea794d70619fbe6d",
+    "content-hash": "3afb12bc8f972e44c419e3b0b598b30c",
     "packages": [
         {
-            "name": "fpdo/fluentpdo",
-            "version": "v1.1.0",
+            "name": "mistevs/fluentpdo",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fpdo/fluentpdo.git",
-                "reference": "fa0df68d098a1ebb1b0461e4750ef2749869219c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fpdo/fluentpdo/zipball/fa0df68d098a1ebb1b0461e4750ef2749869219c",
-                "reference": "fa0df68d098a1ebb1b0461e4750ef2749869219c",
-                "shasum": ""
+                "url": "/Users/michaelstevens/Repositories/fluentpdo",
+                "reference": "f3f08494cc530e9cd36f52dad86b5336a439f47f"
             },
             "type": "library",
             "autoload": {
@@ -26,31 +20,32 @@
                     "FluentPDO/FluentPDO.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0",
                 "GPL-2.0+"
             ],
             "authors": [
                 {
-                    "name": "Marek Lichtner",
-                    "homepage": "http://licht.sk/"
+                    "name": "Mike Sevens",
+                    "homepage": "https://mistevs.io/"
                 }
             ],
             "description": "FluentPDO is small PHP library for rapid query building. Killer feature is smart join builder which generates joins automatically.",
-            "homepage": "https://github.com/fpdo/fluentpdo",
+            "homepage": "https://github.com/mistevs/fluentpdo",
             "keywords": [
                 "database",
                 "dbal",
                 "pdo"
             ],
-            "time": "2016-07-08T13:40:45+00:00"
+            "time": "2017-07-05 21:32:29"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mistevs/fluentpdo": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
