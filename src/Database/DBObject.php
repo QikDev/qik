@@ -50,9 +50,12 @@ class DBObject implements APIObject, \IteratorAggregate
 	{
 		return $this->fields[$key];
 	}
-
-	public function SetFields($fields)
+ 
+	public function SetFields($fields) : bool
 	{
+		if (count($fields) <= 0)
+			return false;
+
 		foreach ($fields as $key=>$val)
 		{
 			if ($key == $this->primaryKeyColumn)
@@ -62,6 +65,14 @@ class DBObject implements APIObject, \IteratorAggregate
 		}
 
 		return true;
+	}
+
+	protected function GetPrimaryKeyColumn()
+	{
+		if (empty($this->primaryKeyColumn))
+			$this->DeterminePrimaryKey();
+
+		return $this->primaryKeyColumn;
 	}
 
 	public function DeterminePrimaryKey() : bool
@@ -241,56 +252,38 @@ class DBObject implements APIObject, \IteratorAggregate
 	{
 		$this->RequireConnection();
 
-		$this->LoadColumns();
+		$pk = DBQuery::Build()->insertInto($this->GetTable(), $this->fields)->Execute();
 
-		$statement = DBQuery::Build()->insertInto($this->GetTable(), $this->fields);
-		$pk = $statement->Execute();
-
-		Utility::Dump($statement->GetPDO());
-		Utility::Dump($statement);
-		exit;
-
-		if (!$pk)
-		{
-			$errorCode = $statement->errorCode();
-			$errorInfo = $statement->errorInfo();
-			throw new DBObjectInsertError('DBObject insertion error '.$errorInfo[0].' '.$errorInfo[1].': '.$errorInfo[2]);
-		}
-
-		
-		$this->{$this->primaryKeyColumn} = $pk;
+		$this->{$this->GetPrimaryKeyColumn()} = $pk;
 		$this->primaryKeyValue = $pk;
 
-		/*
-		$columns = array_keys($this->fields);
+		return $pk;
+	}
 
-		$keys = [];
-		foreach ($columns as $i=>$key)
-			array_push($keys, ':'.$key);
+	public function Update() : bool
+	{
+		$this->RequireConnection();
 
-		$values = [];
-		foreach ($this->fields as $key=>$value)
-			$values[':'.$key] = $value;
+		$result = DBQuery::Build()->update($this->GetTable(), $this->fields, $this->{$this->GetPrimaryKeyColumn()})->Execute();
 
-		$statement = self::$connection->Prepare('INSERT INTO '.$this->table.' ('.implode(',', $columns).') VALUES ('.implode(',', $keys).')');
-		
-		if (!$statement->Execute($values))
-		{
-			
-		}
-		*/
+		return $result;
+	}
 
-		return true;
+	public function Delete() : bool
+	{
+		$this->RequireConnection();
+
+		$result = DBQuery::Build()->deleteFrom($this->GetTable(), $this->{$this->GetPrimaryKeyColumn()})->Execute();
+
+		return $result;
 	}
 
 	public function Get($pk)
 	{
-		$this->DeterminePrimaryKey();
-		$class = get_class($this);
-		
-		$this->SetFields(DBQuery::Build()->from($this->GetTable())->where($this->primaryKeyColumn.' = ?', $pk)->Fetch());
+		$results = DBQuery::Build()->from($this->GetTable())->where($this->GetPrimaryKeyColumn().' = ?', $pk)->FetchAll();
+
+		$this->SetFields($results);
 
 		return $this;
-
 	}
 }
