@@ -13,7 +13,8 @@ class DefaultController extends APIController
 	public function GET()
 	{
 		$obj = new Object();
-		$results = DBQuery::Build()->from($obj->GetTable())->select('object.id')->leftJoin('related')->leftJoin('related2')->select('related.rol1')->select('related2.roll3')->FetchAll();
+		$results = DBQuery::Build()->from($obj->GetTable())->leftJoin('related')->leftJoin('related2')->select(array('related.rol1', 'related2.roll3', 'related2.id'))->FetchAll();
+		
 		$this->response->AddData(DBResult::CreateObjects($results, [new Object, new Related, new Related2]));
 	}
 }
