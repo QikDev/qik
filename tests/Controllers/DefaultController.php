@@ -12,24 +12,10 @@ class DefaultController extends APIController
 {
 	public function GET()
 	{
-		$obj = new Object(2);
-		$obj->col1 = 10;
-		$obj->col2 = 20;
-		$obj->col3 = 30;
-		$obj->Delete();
-
-		$this->response->AddData($obj);
-		$this->response->Send();
-
-		exit;
-
 		$results = DBQuery::Build()
 						->from('object')
-						->select(array('object.id, r__home.rol1 as related__home_rol1, r__away.rol1 as related__away_rol1'))
-						->leftJoin('related as r__home ON r__home.id = object.related_id')
-						->leftJoin('related as r__away ON r__away.id = object.related2_id')
 					->FetchAll();
 		
-		$this->response->AddData('results', DBResult::CreateObjects($results, [new Object, new Related, new Related2]));
+		$this->response->AddData('results', DBResult::CreateObjects($results, [new Object]));
 	}
 }

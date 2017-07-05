@@ -68,7 +68,7 @@ class DBResult
 
 						$objectified[ucfirst($class)]->{$subclass}->{$field} = $val;
 					}
-					else
+					elseif (isset($objectified[ucfirst($class)]))
 						$objectified[ucfirst($class)]->{$field} = $val;
 				}
 				elseif (isset($columns[$key]) && !isset($objectified[$columns[$key]]->{$key}))
