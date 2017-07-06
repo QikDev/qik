@@ -7,7 +7,7 @@ use Qik\Exceptions\APIException;
 class Validator
 {
 	
-	public static function ValidateCharacters($text = null, $illegalCharacters = null, $error = null)
+	public static function ValidateCharacters($text = null, $illegalCharacters = null, $error = null, $errorTag = null)
 	{
 		if (empty($text))
 			return;
@@ -39,13 +39,13 @@ class Validator
 		}
 	}
 	
-	public static function ValidateInt($input = null, $error = null)
+	public static function ValidateInt($input = null, $error = null, $errorTag = null)
 	{
        	if (is_null($input) || !preg_match('/^(-?)[0-9]+$/', $input))
-            throw new APIException($error ?? "Input must be a whole number");
+            throw new APIException($error ?? "Input must be a whole number", $errorTag);
 	}
 	
-	public static function ValidateEmail($email = null, $checkDomain = true, $error = null)
+	public static function ValidateEmail($email = null, $checkDomain = true, $error = null, $errorTag = null)
 	{
 		if (empty($email) || !preg_match('/'
 			. '^'
@@ -58,17 +58,17 @@ class Validator
 			. '/'
 			, $email
 		))
-			throw new APIException($error ?? "Email address is invalid.");
+			throw new APIException($error ?? "Email address is invalid.", $errorTag);
 		
 		list( $local, $domain ) = preg_split( "/@/", $email, 2 );
 		if ( strlen($local) > 64 || strlen($domain) > 255 ) 
-			throw new APIException($error ?? "Email address is invalid.");
+			throw new APIException($error ?? "Email address is invalid.", $errorTag);
 
 		if ($checkDomain)
-			Validator::ValidateDomain($domain);
+			Validator::ValidateDomain($domain, 'MX', $error, $errorTag);
 	}
 	
-	public static function ValidateDomain($domain = null, $record = 'MX', $error = null)
+	public static function ValidateDomain($domain = null, $record = 'MX', $error = null, $errorTag = null)
 	{
 		if (empty($domain) || empty($record))
 			return;
@@ -76,11 +76,11 @@ class Validator
 		if(function_exists('checkdnsrr'))
 		{
 			if (!checkdnsrr($domain, $record))
-				throw new APIException($error ?? "Email domain appears to be invalid");
+				throw new APIException($error ?? "Email domain appears to be invalid", $errorTag);
 		}
 	}
 	
-	public static function ValidateMatch($val1 = null, $val2 = null, $error = null)
+	public static function ValidateMatch($val1 = null, $val2 = null, $error = null, $errorTag = null)
 	{
 		$match = true;
 		if ($strict)
@@ -95,19 +95,19 @@ class Validator
 		}
 		
 		if (!$match)
-			throw new APIException($error ?? "Values must match");
+			throw new APIException($error ?? "Values must match", $errorTag);
 	}
 	
-	public static function ValidateNotEmpty($val = null, $error = null)
+	public static function ValidateNotEmpty($val = null, $error = null, $errorTag = null)
 	{
 		if (empty($val))
-			throw new APIException($error ?? "Value cannot be empty");
+			throw new APIException($error ?? "Value cannot be empty", $errorTag);
 	}
 	
-	public static function ValidateDate($date = null, $delimiter = null, $format = 'auto', $error = null)
+	public static function ValidateDate($date = null, $delimiter = null, $format = 'auto', $error = null, $errorTag = null)
 	{
 		if (empty($date))
-			throw new APIException($error ?? "No date given");
+			throw new APIException($error ?? "No date given", $errorTag);
 		
 		$parts = array();
 		// parse the date
@@ -118,18 +118,18 @@ class Validator
 
 		
 		if (empty($dateParts['year']))
-			throw new APIException($error ?? "No year provided");
+			throw new APIException($error ?? "No year provided", $errorTag);
 		if (empty($dateParts['month']))
-			throw new APIException($error ?? "No month provided");
+			throw new APIException($error ?? "No month provided", $errorTag);
 		if (empty($dateParts['day']))
-			throw new APIException($error ?? "No day provided");
+			throw new APIException($error ?? "No day provided", $errorTag);
 		
 		if (!is_numeric($dateParts['year']))
-			throw new APIException($error ?? 'You entered an invalid year');
+			throw new APIException($error ?? 'You entered an invalid year', $errorTag);
 		if (!is_numeric($dateParts['month']) || $dateParts['month'] < 1 || $dateParts['month'] > 12)
-			throw new APIException($error ?? 'You entered an invalid month');
+			throw new APIException($error ?? 'You entered an invalid month', $errorTag);
 		if (!is_numeric($dateParts['day']) || $dateParts['day'] < 1)
-			throw new APIException($error ?? 'You entered an invalid day');
+			throw new APIException($error ?? 'You entered an invalid day', $errorTag);
 
 		switch ((int)$dateParts['month'])
 		{
@@ -138,7 +138,7 @@ class Validator
 			case 9:
 			case 11:
 				if ((int)$dateParts['day'] > 30)
-					throw new APIException($error ?? "The month you selected only has 30 days");
+					throw new APIException($error ?? "The month you selected only has 30 days", $errorTag);
 				break;
 				
 			case 1:
@@ -149,15 +149,15 @@ class Validator
 			case 10:
 			case 12:
 				if ((int)$dateParts['day'] > 31)
-					throw new APIException($error ?? "The month you selected only has 31 days");
+					throw new APIException($error ?? "The month you selected only has 31 days", $errorTag);
 				break;				
 			case 2:
 				// is it a leap year?
 				$leap = checkdate(2, 29, $dateParts['year']);
 				if ($leap && $dateParts['day'] > 29)
-					throw new APIException($error ?? "February only has 29 days (in the year provided)");
+					throw new APIException($error ?? "February only has 29 days (in the year provided)", $errorTag);
 				else if (!$leap && $dateParts['day'] > 28)
-					throw new APIException($error ?? "February only has 28 days (in the year provided)");
+					throw new APIException($error ?? "February only has 28 days (in the year provided)", $errorTag);
 				break;					
 			default:
 				throw new APIException($error ?? 'You entered an invalid valid month');
@@ -166,35 +166,35 @@ class Validator
 		
 		// and one final check
 		if (!checkdate($dateParts['month'], $dateParts['day'], $dateParts['year']))
-			throw new APIException($error ?? 'You entered an invalid date');
+			throw new APIException($error ?? 'You entered an invalid date', $errorTag);
 			
 	}
 	
-	public static function ValidateMaxLength($text = null, $maxlength = null, $error = null)
+	public static function ValidateMaxLength($text = null, $maxlength = null, $error = null, $errorTag = null)
 	{
 		if (empty($text) || empty($maxlength))
 			return;
 		
 		if (strlen($text) > $maxlength)
-			throw new APIException($error ?? "The value was greater than the allowed length of $maxlength characters");
+			throw new APIException($error ?? "The value was greater than the allowed length of $maxlength characters", $errorTag);
 		else
 			return;
 	}
 
-	public static function ValidateLength($text = null, $length = null, $error = null)
+	public static function ValidateLength($text = null, $length = null, $error = null, $errorTag = null)
 	{
 		if (empty($text) || empty($length))
 			return;
 		
 		if (strlen($text) != $length)
 		{
-			throw new APIException($error ?? "The value must be $length characters long");
+			throw new APIException($error ?? "The value must be $length characters long", $errorTag);
 		}
 		else
 			return;
 	}
 	
-	public static function ValidateRegexMatch($text = null, $pattern = null, $error = null)
+	public static function ValidateRegexMatch($text = null, $pattern = null, $error = null, $errorTag = null)
 	{
 		if (empty($text) || empty($pattern))
 			return false;
@@ -202,9 +202,7 @@ class Validator
 		$match = preg_match($pattern, $text);
 
 		if ($match == 0)
-			throw new APIException($error ?? 'The given text of "'.$text.'" did not match the pattern of "'.$pattern.'"');
+			throw new APIException($error ?? 'The given text of "'.$text.'" did not match the pattern of "'.$pattern.'"', $errorTag);
 	}
-	
-	
 }
 ?>
