@@ -103,7 +103,6 @@ class Validator
 			$delimiter = Date::FindDelimiter($date);
 
 		$dateParts = Date::Parse($date, $delimiter, $format);
-
 		
 		if (empty($dateParts['year']))
 			throw new APIException($error ?? "No year provided", $errorTag);
