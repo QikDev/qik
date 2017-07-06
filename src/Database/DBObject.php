@@ -48,7 +48,10 @@ class DBObject implements APIObject, \IteratorAggregate
 
 	public function __get($key)
 	{
-		return $this->fields[$key];
+		if (isset($this->fields[$key]))
+			return $this->fields[$key];
+
+		return null;
 	}
  
 	public function SetFields($fields) : bool
