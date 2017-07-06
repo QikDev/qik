@@ -35,7 +35,7 @@ class APIResponse
 		elseif (empty($message))
 			$message = $thrown->getMessage();
 
-		$this->AddHeader('X-PHP-Response-Code', $responseCode, $responseCode);
+		$this->AddHeader('X-PHP-Response-Code', $responseCode ?? 200, $responseCode ?? 200);
 
 		$this->success = false;
 		$error = array(

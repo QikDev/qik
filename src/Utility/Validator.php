@@ -82,19 +82,7 @@ class Validator
 	
 	public static function ValidateMatch($val1 = null, $val2 = null, $error = null, $errorTag = null)
 	{
-		$match = true;
-		if ($strict)
-		{
-			if ($val1 !== $val2)
-				$match = false;
-		}
-		else
-		{
-			if ($val != $val2)
-				$match = false;
-		}
-		
-		if (!$match)
+		if (!$val1 !== $val2)
 			throw new APIException($error ?? "Values must match", $errorTag);
 	}
 	
