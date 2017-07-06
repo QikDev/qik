@@ -12,6 +12,9 @@ class DefaultController extends APIController
 {
 	public function GET()
 	{
-
+		$object = new Object();
+		$user = DBQuery::Build()->from($object->GetTable())->select(['id', 'col1'])->asObject(get_class($object))->Fetch();
+		Utility::Dump($user);
+		exit;
 	}
 }

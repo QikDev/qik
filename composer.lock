@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e1ee00d6d8819c0647facd291711cd8",
+    "content-hash": "3afb12bc8f972e44c419e3b0b598b30c",
     "packages": [
         {
             "name": "mistevs/fluentpdo",
-            "version": "1.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mistevs/fluentpdo.git",
-                "reference": "5dfb398075b970a0ff4ec878eff2b6276b2b7ae3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mistevs/fluentpdo/zipball/5dfb398075b970a0ff4ec878eff2b6276b2b7ae3",
-                "reference": "5dfb398075b970a0ff4ec878eff2b6276b2b7ae3",
-                "shasum": ""
+                "url": "/Users/michaelstevens/Repositories/fluentpdo",
+                "reference": "722a6b889eba78946c7030774bdf7b3cebecd4fa"
             },
             "type": "library",
             "autoload": {
@@ -26,7 +20,6 @@
                     "FluentPDO/FluentPDO.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0",
                 "GPL-2.0+"
@@ -44,13 +37,15 @@
                 "dbal",
                 "pdo"
             ],
-            "time": "2017-07-05T22:03:18+00:00"
+            "time": "2017-07-06 04:34:48"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mistevs/fluentpdo": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "mistevs/fluentpdo": "1.2"
+        "mistevs/fluentpdo": "dev-master"
     },
     "repositories": [
         {
