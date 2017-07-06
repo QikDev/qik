@@ -280,7 +280,7 @@ class DBObject implements APIObject, \IteratorAggregate
 
 	public function Get($pk)
 	{
-		$results = DBQuery::Build()->from($this->GetTable())->where($this->GetPrimaryKeyColumn().' = ?', $pk)->FetchAll();
+		$results = DBQuery::Build()->from($this->GetTable())->where($this->GetPrimaryKeyColumn().' = ?', $pk)->Fetch();
 
 		$this->SetFields($results);
 
