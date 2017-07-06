@@ -12,10 +12,6 @@ class DefaultController extends APIController
 {
 	public function GET()
 	{
-		$results = DBQuery::Build()
-						->from('object')
-					->FetchAll();
-		
-		$this->response->AddData('results', DBResult::CreateObjects($results, [new Object]));
+
 	}
 }
