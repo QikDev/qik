@@ -9,13 +9,16 @@ class APIException extends \Exception
 	protected $message;
 	protected $errorCode;
 	protected $responseCode;
+	protected $tag;
 	protected $internalMessage;
 
-	public function __construct($message = null, $errorCode = null, $responseCode = null, $internalMessage = '', Throwable $previous = null) 
+	public function __construct(string $message = null, string $tag = 'global', int $errorCode = null, int $responseCode = null, string $internalMessage = null, Throwable $previous = null) 
 	{
 		$iMessage = (!empty($message) ? $message : (!empty($this->message) ? $this->message : 'An unknown exception occurred'));
 		$iErrorCode = (!empty($errorCode) ? $errorCode : (!empty($this->errorCode) ? $this->errorCode : 0));
-		$iResponseCode = (!empty($responseCode) ? $responseCode : (!empty($this->responseCode) ? $this->responseCode : 500));
+		
+		$this->tag = (!empty($tag) ? $tag : (!empty($this->tag) ? $this->tag : 'global'));
+		$this->responseCode = (!empty($responseCode) ? $responseCode : (!empty($this->responseCode) ? $this->responseCode : 400));
 
 		$this->internalMessage = $internalMessage;
 
@@ -25,6 +28,11 @@ class APIException extends \Exception
 	public function getResponseCode()
 	{
 		return $this->responseCode;
+	}
+
+	public function getTag()
+	{
+		return $this->tag;
 	}
 
 	public function getInternalMessage()

@@ -21,9 +21,6 @@ class APIResponse
 
 	public function SetError($thrown = null)
 	{
-		$responseCode = 400;
-		$errorCode = $thrown->getCode();
-
 		if (get_class($thrown) == 'Error') //these should be internal-only dev errors, send a bullshit "unknown error" response out
 		{	
 			$message = 'A critical error occurred with the request';
@@ -35,15 +32,16 @@ class APIResponse
 
 		if (method_exists($thrown, 'getExternalMessage'))
 			$message = $thrown->getExternalMessage();
-		else
+		elseif (empty($message))
 			$message = $thrown->getMessage();
 
 		$this->AddHeader('X-PHP-Response-Code', $responseCode, $responseCode);
 
 		$this->success = false;
 		$error = array(
-					'code'=>$errorCode, 
-					'message'=>$message
+					'code' => $thrown->getCode(),
+					'message' => $message,
+					'tag' => $thrown->getTag()
 				);
 
 		if (APIServer::IsDevelopment())
@@ -52,7 +50,10 @@ class APIResponse
 			$error['internalMessage'] = method_exists($thrown, 'getInternalMessage') ? $thrown->getInternalMessage() : $thrown->getMessage();
 		}
 
-		$this->errors[$errorCode] = $error;
+		if (!isset($this->errors[$error['tag'] ?? $error['code']]))
+			$this->errors[$error['tag'] ?? $error['code']] = array();
+
+		$this->errors[$error['tag'] ?? $error['code']][] = $error;
 	}
 
 	public function DisableCache()
