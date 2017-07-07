@@ -42,7 +42,7 @@ class DBResult
 			$objectified = [];
 			foreach ($baseObjects as $key=>$object)
 				$objectified[$key] = clone $object;
-			
+
 			foreach ($result as $key=>$val)
 			{
 				if (strpos($key, '_') > -1)
@@ -80,10 +80,6 @@ class DBResult
 
 			array_push($return, $objectified);
 		}
-
-		Utility::Dump($return);
-		Utility::Dump($results);
-		exit;
 
 		return new DBResult($return);
 	}
