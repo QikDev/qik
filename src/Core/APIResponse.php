@@ -39,7 +39,7 @@ class APIResponse
 		if (method_exists($thrown, 'getTag'))
 			$tag = $thrown->getTag();
 
-		$this->AddHeader('X-PHP-Response-Code', $responseCode ?? 200, $responseCode ?? 200);
+		$this->AddHeader('X-PHP-Response-Code', $responseCode ?? 400, $responseCode ?? 400);
 
 		$this->success = false;
 		$error = array(
