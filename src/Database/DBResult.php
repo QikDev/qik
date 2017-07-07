@@ -78,6 +78,10 @@ class DBResult
 			array_push($return, $objectified);
 		}
 
+		Utility::Dump($return);
+		Utility::Dump($results);
+		exit;
+
 		return new DBResult($return);
 	}
 
