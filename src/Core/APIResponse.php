@@ -35,13 +35,17 @@ class APIResponse
 		elseif (empty($message))
 			$message = $thrown->getMessage();
 
+		$tag = 'global';
+		if (method_exists($thrown, 'getTag'))
+			$tag = $thrown->getTag();
+
 		$this->AddHeader('X-PHP-Response-Code', $responseCode ?? 200, $responseCode ?? 200);
 
 		$this->success = false;
 		$error = array(
 					'code' => $thrown->getCode(),
 					'message' => $message,
-					'tag' => $thrown->getTag()
+					'tag' => $tag
 				);
 
 		if (APIServer::IsDevelopment())
