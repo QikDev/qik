@@ -39,7 +39,10 @@ class DBResult
 		$return = [];
 		foreach ($results as $result)
 		{
-			$objectified = clone $baseObjects;
+			$objectified = [];
+			foreach ($baseObjects as $key=>$object)
+				$objectified[$key] = clone $object;
+			
 			foreach ($result as $key=>$val)
 			{
 				if (strpos($key, '_') > -1)
