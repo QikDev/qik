@@ -233,9 +233,9 @@ class DBObject implements APIObject, \IteratorAggregate
 		return self::$connection->Export('SELECT * FROM '.$this->table, ucwords(str_replace('_', ' ', $this->table)));
 	}
 
-	public function GetRecords()
+	public function Select($select = '*')
 	{
-
+		return DBQuery::Build()->from($this->GetTable())->select($select);
 	}
 
 	public function GetAll() : array
