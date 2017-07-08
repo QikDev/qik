@@ -67,6 +67,7 @@ class DBObject implements APIObject, \IteratorAggregate
  
 	public function SetFields($fields) : bool
 	{
+		Utility::Dump('=== setting fields ===');
 		if (count($fields) <= 0)
 			return false;
 
