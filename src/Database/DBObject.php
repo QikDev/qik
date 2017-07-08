@@ -67,7 +67,7 @@ class DBObject implements APIObject, \IteratorAggregate
 		return true;
 	}
 
-	protected function GetPrimaryKeyColumn()
+	public function GetPrimaryKeyColumn()
 	{
 		if (empty($this->primaryKeyColumn))
 			$this->DeterminePrimaryKey();
