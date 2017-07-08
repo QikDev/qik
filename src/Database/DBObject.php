@@ -84,14 +84,16 @@ class DBObject implements APIObject, \IteratorAggregate
 
 	public function GetPrimaryKeyColumn()
 	{
-		if (empty($this->primaryKeyColumn))
-			$this->DeterminePrimaryKey();
+		$this->DeterminePrimaryKey();
 
 		return $this->primaryKeyColumn;
 	}
 
 	public function DeterminePrimaryKey() : bool
 	{
+		if (!empty($this->primaryKeyColumn))
+			return true;
+
 		//$this->Query('SELECT * FROM '.$this->table);
 		$sql = 'SHOW KEYS FROM '.$this->table.' WHERE Key_name = \'primary\'';
 		$columns = $this->Query($sql)->FetchAll();
