@@ -14,7 +14,7 @@ class DefaultController extends APIController
 	public function GET()
 	{
 		$object = new Object();
-		$user = DBQuery::Build()->from($object->GetTable())->select(['object.id', 'object.col1', 'related.rol1'])->FetchAll();
+		$user = DBQuery::Build()->from($object->GetTable())->select(['object.id', 'object.colColCol1', 'related.rol1'])->FetchAll();
 		$result = DBResult::CreateObjects($user, [new Object, new Related]);
 		$this->response->AddData('objects', $result);
 		//exit;
