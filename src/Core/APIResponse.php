@@ -4,6 +4,7 @@ namespace Qik\Core;
 
 use Qik\Qik;
 use Qik\Core\APIServer;
+use Qik\Exceptions\{APIException, APIInternalException};
 use Qik\Utility\{Utility};
 use Qik\Debug\{Debugger, Logger};
 
@@ -21,6 +22,9 @@ class APIResponse
 
 	public function SetError($thrown = null)
 	{
+		if (!is_object($thrown))
+			throw new APIInternalException('$thrown passed to SetError is not an object');
+
 		if (get_class($thrown) == 'Error') //these should be internal-only dev errors, send a bullshit "unknown error" response out
 		{	
 			$message = 'A critical error occurred with the request';
@@ -199,32 +203,8 @@ class APIResponse
 
 	public function SendUnauthorized()
 	{
-		$this->SendError(401);
-	}
-
-	public function SendUnknownError()
-	{
-		$this->SetError(xError::Set('unknown-error', 'There was an unknown error with your request'));
-		return $this->SendIfError();
-	}
-
-	public function SendSuccessMessage($message = null)
-	{
-		if (!empty($message))
-			$this->AddData('message', $message);
-
-		$this->Send();
-	}
-
-	public function SendErrorMessage($message = null, $tag = null, $code = 400)
-	{
-		return $this->SendError($code, $message, $tag);
-	}
-
-	public function SendError($message = null, $errorCode = null, $responseCode = 400)
-	{
-		$this->SetError($message, $errorCode, $responseCode);
-		return $this->Send();
+		throw new APIException(null, 'global', 0, 401);
+		//$this->SendError(401);
 	}
 
 	public function SetCachePrefix($prefix = 'auth')
