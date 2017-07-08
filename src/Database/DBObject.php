@@ -100,7 +100,7 @@ class DBObject implements APIObject, \IteratorAggregate
 			if (strtolower($col['Key_name']) == 'primary')
 			{
 				$this->primaryKeyColumn = $col['Column_name'];
-				$this->{$this->primaryKeyColumn} = $this->primaryKeyValue;
+				$this->{$this->primaryKeyColumn} ?? $this->primaryKeyValue;
 				return true;
 			}
 		}
