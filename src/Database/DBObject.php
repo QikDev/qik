@@ -48,6 +48,8 @@ class DBObject implements APIObject, \IteratorAggregate
 
 	public function __set($key, $val)
 	{
+		Utility::Dump('__setting '.$key.'='.$val);
+
 		$this->fields[$key] = $val;
 	}
 
