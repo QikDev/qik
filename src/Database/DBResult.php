@@ -82,7 +82,7 @@ class DBResult
 				$object = $objectified[$primaryClass];
 				unset($objectified[$primaryClass]);
 				foreach ($objectified as $key=>$o)
-					$object->{is_object($o) ? strtolower($key) : $key} = $o;
+					$object->{$key} = $o;
 			}
 
 			array_push($return, $object);
