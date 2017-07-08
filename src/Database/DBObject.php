@@ -11,7 +11,7 @@ class DBObject implements APIObject, \IteratorAggregate
 {
 	private static $columns = [];
 	private static $connection;
-	private $fields = [];
+	protected $fields = [];
 
 	protected $table;
 	protected $primaryKeyColumn;
