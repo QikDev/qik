@@ -53,6 +53,8 @@ class DBObject implements APIObject, \IteratorAggregate
 
 	public function __get($key)
 	{
+		Utility::Dump('__getting '.$key);
+
 		return $this->fields[$key] ?? null;
 	}
  
