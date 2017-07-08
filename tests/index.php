@@ -13,7 +13,7 @@ $server->RegisterController(new Controllers\DefaultController);
 
 $server->RegisterPostCache(function() {
 	$connection = DBManager::CreateConnection('mysql', 'local', 'local', 'local');
-	DBQuery::Connect($connection);
+	DBQuery::Connect($connection, true);
 	//DBQuery::EnableDebug();
 	//DBManager::SetDefaultTablePrefix('qik_');
 });

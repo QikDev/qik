@@ -14,9 +14,9 @@ class DefaultController extends APIController
 	public function GET()
 	{
 		$object = new Object();
-		$user = DBQuery::Build()->from($object->GetTable())->select(['object.id', 'object.colColCol1', 'related.rol1'])->FetchAll();
-		$result = DBResult::CreateObjects($user, [new Object, new Related]);
-		$this->response->AddData('objects', $result);
+		$user = DBQuery::Build()->from($object->GetTable())->select(['object.id'])->asObject(get_class($object))->Fetch();
+		//$result = DBResult::CreateObjects($user, [new Object, new Related]);
+		$this->response->AddData($user);
 		//exit;
 		//throw new APIException('throw a 400!');
 		//Utility::Dump($user);
