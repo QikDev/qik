@@ -60,7 +60,7 @@ class DBObject implements APIObject, \IteratorAggregate
 			Utility::Dump($this->fields);
 		}
 
-		return $this->fields[$key] ?? null;
+		return isset($this->fields[$key]) ? $this->fields[$key] : null;
 	}
  
 	public function SetFields($fields) : bool
