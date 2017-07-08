@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "/Users/michaelstevens/Repositories/fluentpdo",
-                "reference": "722a6b889eba78946c7030774bdf7b3cebecd4fa"
+                "reference": "1500e5ccf12000fe2670f79e0c154f2424d01d1e"
             },
             "type": "library",
             "autoload": {
@@ -37,7 +37,7 @@
                 "dbal",
                 "pdo"
             ],
-            "time": "2017-07-06 04:34:48"
+            "time": "2017-07-08 03:54:19"
         }
     ],
     "packages-dev": [],
