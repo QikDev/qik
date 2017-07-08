@@ -203,7 +203,7 @@ class APIResponse
 
 	public function SendUnauthorized()
 	{
-		throw new APIException(null, null, 0, 401);
+		throw new APIException('Unauthorized Request', null, 0, 401);
 	}
 
 	public function SendError(\Throwable $thrown)
