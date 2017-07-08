@@ -203,8 +203,13 @@ class APIResponse
 
 	public function SendUnauthorized()
 	{
-		throw new APIException(null, 'global', 0, 401);
-		//$this->SendError(401);
+		throw new APIException(null, null, 0, 401);
+	}
+
+	public function SendError(\Throwable $thrown)
+	{
+		$this->SetError($thrown);
+		return $this->Send();
 	}
 
 	public function SetCachePrefix($prefix = 'auth')
