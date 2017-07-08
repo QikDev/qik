@@ -269,7 +269,10 @@ class DBObject implements APIObject, \IteratorAggregate
 	{
 		$this->RequireConnection();
 
-		$result = DBQuery::Build()->update($this->GetTable(), $this->fields, $this->{$this->GetPrimaryKeyColumn()})->Execute();
+		$fields = $this->fields;
+		unset($fields[$this->GetPrimaryKeyColumn()]);
+
+		$result = DBQuery::Build()->update($this->GetTable(), $fields, $this->{$this->GetPrimaryKeyColumn()})->Execute();
 
 		return $result;
 	}
