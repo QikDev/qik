@@ -19,9 +19,10 @@ class DBQuery extends FluentPDO
 		
 	}
 
-	public static function Connect($pdo = null)
+	public static function Connect($pdo = null, $convertTypes = false)
 	{
 		self::$_instance = new DBQuery($pdo);
+		self::$_instance->convertTypes = $convertTypes;
 	}
 
 	public static function Get()
