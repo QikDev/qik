@@ -25,15 +25,13 @@ class DBResult
 
 		$baseObjects = [];
 		$columns = [];
+		$primaryClass = Utility::GetBaseClassNameFromNamespace($objects[0]);
 		foreach ($objects as $object)
 		{
 			$baseObjects[Utility::GetBaseClassNameFromNamespace($object)] = $object;
 			$cols = $object->GetColumns();
 			foreach ($cols as $key=>$val)
-			{
-				if (!isset($columns[$key]))
-					$columns[$key] = Utility::GetBaseClassNameFromNamespace($object);
-			}
+				$columns[$key] = $columns[$key] ?? Utility::GetBaseClassNameFromNamespace($object);
 		}
 
 		$return = [];
@@ -78,7 +76,16 @@ class DBResult
 					$objectified[ucfirst($columns[$key])]->{$key} = $val;
 			}
 
-			array_push($return, $objectified);
+			$object = $objectified;
+			if (isset($objectified[$primaryClass]))
+			{
+				$object = $objectified[$primaryClass];
+				unset($objectified[$primaryClass]);
+				foreach ($objectified as $key=>$o)
+					$object->{strtolower($key)} = $o;
+			}
+
+			array_push($return, $object);
 		}
 
 		return new DBResult($return);

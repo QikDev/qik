@@ -14,12 +14,10 @@ class DefaultController extends APIController
 	public function GET()
 	{
 		$object = new Object();
-		$object->col1 = 4;
-		$object->col2 = 4;
-		$object->col3 = 4;
-		$object->Insert();
-		//$user = DBQuery::Build()->from($object->GetTable())->select(['id', 'col1'])->asObject(get_class($object))->Fetch();
-
+		$user = DBQuery::Build()->from($object->GetTable())->select(['object.id', 'object.col1', 'related.rol1'])->FetchAll();
+		$result = DBResult::CreateObjects($user, [new Object, new Related]);
+		$this->response->AddData('objects', $result);
+		//exit;
 		//throw new APIException('throw a 400!');
 		//Utility::Dump($user);
 		//exit;
