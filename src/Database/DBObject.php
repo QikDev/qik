@@ -215,7 +215,7 @@ class DBObject implements APIObject, \IteratorAggregate
 		return $this->fields[$column] = $value;
 	}
 
-	private function RequireConnection()
+	protected function RequireConnection()
 	{
 		if (empty(self::$connection))
 			return self::$connection = DBManager::GetConnection();
