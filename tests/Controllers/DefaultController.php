@@ -14,9 +14,10 @@ class DefaultController extends APIController
 	public function GET()
 	{
 		$object = new Object();
-		$user = $object->Select()->asObject(get_class($object))->Fetch();
+		$user = $object->Select()->FetchAll();
+		//exit;
 		//$result = DBResult::CreateObjects($user, [new Object, new Related]);
-		$this->response->AddData($user);
+		$this->response->AddData($user);//'users', DBResult::CreateObjects($user, [new Object]));
 		//exit;
 		//throw new APIException('throw a 400!');
 		//Utility::Dump($user);

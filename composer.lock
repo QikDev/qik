@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3afb12bc8f972e44c419e3b0b598b30c",
+    "content-hash": "2ce1dc4735ffd7450d9e1c8e2bd67284",
     "packages": [
         {
             "name": "mistevs/fluentpdo",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "/Users/michaelstevens/Repositories/fluentpdo",
-                "reference": "653b9181b5875867d211622184123d55a8a9b33c"
+                "reference": "5002909d8f4db2b9bd018fc2297553990be6a30f"
             },
             "type": "library",
             "autoload": {
@@ -37,12 +37,12 @@
                 "dbal",
                 "pdo"
             ],
-            "time": "2017-07-08 05:26:51"
+            "time": "2017-07-08 20:10:04"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "mistevs/fluentpdo": 20
     },
