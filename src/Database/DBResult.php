@@ -31,7 +31,12 @@ class DBResult
 			$baseObjects[Utility::GetBaseClassNameFromNamespace($object)] = $object;
 			$cols = $object->GetColumns();
 			foreach ($cols as $key=>$val)
-				$columns[$key] = $columns[$key] ?? Utility::GetBaseClassNameFromNamespace($object);
+			{
+				if (!isset($columns[$key]))
+					$columns[$key] = array();
+
+				array_push($columns[$key], Utility::GetBaseClassNameFromNamespace($object));
+			}
 		}
 
 		$return = [];
@@ -58,6 +63,10 @@ class DBResult
 						$class = $parts[0];
 						$subclass = $parts[1];
 					}
+
+					Utility::Dump($key);
+					Utility::Dump($field);
+					Utility::Dump($class);
 
 					if (!empty($subclass))
 					{
