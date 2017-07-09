@@ -58,6 +58,9 @@ class DBObject implements APIObject, \IteratorAggregate
  
 	public function SetFields($fields) : bool
 	{
+
+		Utility::Dump($fields);
+		exit;
 		if (count($fields) <= 0 || !is_array($fields))
 			return false;
 
