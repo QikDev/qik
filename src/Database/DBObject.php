@@ -58,10 +58,7 @@ class DBObject implements APIObject, \IteratorAggregate
  
 	public function SetFields($fields) : bool
 	{
-
-		Utility::Dump($fields);
-		exit;
-		if (count($fields) <= 0 || !is_array($fields))
+		if (!is_array($fields) || count($fields) <= 0)
 			return false;
 
 		foreach ($fields as $key=>$val)
@@ -292,7 +289,8 @@ class DBObject implements APIObject, \IteratorAggregate
 	{
 		$results = DBQuery::Build()->from($this->GetTable())->where($this->GetPrimaryKeyColumn().' = ?', $pk)->Fetch();
 
-		$this->SetFields($results);
+		if ($results)
+			$this->SetFields($results);
 
 		return $this;
 	}
