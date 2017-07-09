@@ -86,6 +86,7 @@ class DBResult
 			}
 
 			Utility::Dump($results);
+			Utility::Dump($columns);
 			Utility::Dump($objectified);
 			Utility::Dump($object);
 			exit;
