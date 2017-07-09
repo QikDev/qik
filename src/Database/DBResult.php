@@ -32,10 +32,10 @@ class DBResult
 			$cols = $object->GetColumns();
 			foreach ($cols as $key=>$val)
 			{
-				if (!isset($columns[$key]))
-					$columns[$key] = array();
+				//if (!isset($columns[$key]))
+				$columns[$key] = $columns[$key] ?? Utility::GetBaseClassNameFromNamespace($object);
 
-				array_push($columns[$key], Utility::GetBaseClassNameFromNamespace($object));
+				//array_push($columns[$key], Utility::GetBaseClassNameFromNamespace($object));
 			}
 		}
 
