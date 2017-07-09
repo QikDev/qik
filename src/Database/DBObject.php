@@ -255,7 +255,14 @@ class DBObject implements APIObject, \IteratorAggregate
 		if (empty($value))
 			$value = $this->{$field};
 		
-		return !DBQuery::Build()->from($this->GetTable())->where($field.' = ?', $value)->where($this->GetPrimaryKeyColumn().' != ?', $this->{$this->GetPrimaryKeyColumn()})->Fetch();
+		$query = DBQuery::Build()->from($this->GetTable())->where($field.' = ?', $value);
+
+		if ($this->{$this->GetPrimaryKeyColumn()})
+			$query->where($this->GetPrimaryKeyColumn().' != ?', $this->{$this->GetPrimaryKeyColumn()});
+
+		$result = $query->limit(1)->Fetch();
+			
+		return !$result;
 	}
 
 	public function Insert() : bool
