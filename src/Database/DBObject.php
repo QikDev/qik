@@ -58,7 +58,7 @@ class DBObject implements APIObject, \IteratorAggregate
  
 	public function SetFields($fields) : bool
 	{
-		if (count($fields) <= 0)
+		if (count($fields) <= 0 || !is_array($fields))
 			return false;
 
 		foreach ($fields as $key=>$val)
