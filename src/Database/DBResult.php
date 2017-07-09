@@ -64,9 +64,11 @@ class DBResult
 						$subclass = $parts[1];
 					}
 
+					/*
 					Utility::Dump($key);
 					Utility::Dump($field);
 					Utility::Dump($class);
+					*/
 
 					if (!empty($subclass))
 					{
@@ -94,11 +96,13 @@ class DBResult
 					$object->{$key} = $o;
 			}
 
+			/*
 			Utility::Dump($results);
 			Utility::Dump($columns);
 			Utility::Dump($objectified);
 			Utility::Dump($object);
 			exit;
+			*/
 
 			array_push($return, $object);
 		}
