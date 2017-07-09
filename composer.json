@@ -1,4 +1,5 @@
 {
+    "minimum-stability" : "dev",
     "name": "mistevs/qik",
     "description": "A micro PHP API framework",
     "type": "library",
@@ -16,6 +17,12 @@
         }
     },
     "require": {
-        "mistevs/fluentpdo": "1.2.*"
-    }
+        "mistevs/fluentpdo": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url" : "/Users/michaelstevens/Repositories/fluentpdo"
+        }
+    ]
 }
