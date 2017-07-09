@@ -25,7 +25,7 @@ class DBResult
 
 		$baseObjects = [];
 		$columns = [];
-		$primaryClass = Utility::GetBaseClassNameFromNamespace($objects[0]);
+		$primaryClass = strtolower(Utility::GetBaseClassNameFromNamespace($objects[0]));
 		foreach ($objects as $object)
 		{
 			$baseObjects[strtolower(Utility::GetBaseClassNameFromNamespace($object))] = $object;
