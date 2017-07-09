@@ -85,6 +85,10 @@ class DBResult
 					$object->{$key} = $o;
 			}
 
+			Utility::Dump($objectified);
+			Utility::Dump($object);
+			exit;
+
 			array_push($return, $object);
 		}
 
