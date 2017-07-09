@@ -85,6 +85,7 @@ class DBResult
 					$object->{$key} = $o;
 			}
 
+			Utility::Dump($results);
 			Utility::Dump($objectified);
 			Utility::Dump($object);
 			exit;
