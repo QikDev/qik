@@ -125,7 +125,7 @@ class APIResponse
 				foreach ($row as $k=>$val)
 				{
 					$data = $this->FilterModel($val);
-					$new[is_object($val) ? strtolower($k) : $k] = $data;
+					$new[$k] = $data;
 				}
 
 				if (is_object($value) && !empty($key))
