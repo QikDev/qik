@@ -250,9 +250,12 @@ class DBObject implements APIObject, \IteratorAggregate
 		return $this->Query('SELECT * FROM '.$this->table)->FetchAll(\PDO::FETCH_ASSOC);
 	}
 
-	public function IsFieldUnique(string $field, $value)
+	public function IsFieldUnique(string $field, $value = null)
 	{
-		return !DBQuery::Build()->from($this->GetTable())->where($field.' = ?', $value)->Fetch();
+		if (empty($value))
+			$value = $this->{$field};
+		
+		return !DBQuery::Build()->from($this->GetTable())->where($field.' = ?', $value)->where($this->GetPrimaryKeyColumn().' != ?', $this->{$this->GetPrimaryKeyColumn()})->Fetch();
 	}
 
 	public function Insert() : bool
