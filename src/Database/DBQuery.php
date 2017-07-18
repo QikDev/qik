@@ -30,16 +30,17 @@ class DBQuery extends FluentPDO
 		return self::$_instance;
 	}
 
-	public static function Build()
+	public static function Build() : DBQuery
 	{
 		return self::Get();
 	}
 
 	public static function Query($table, $primaryKey = null)
 	{
-		$this->__query = parent::from($table, $primaryKey);
+	    $me = self::Get();
+		$me->_query = parent::from($table, $primaryKey);
 
-		return $this->__query;
+		return $me->_query;
 	}
 
 	public static function EnableDebug($callback = null)
