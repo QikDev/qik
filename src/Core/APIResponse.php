@@ -52,7 +52,7 @@ class APIResponse
 					'tag' => $tag
 				);
 
-		if (APIServer::IsDevelopment())
+		if (APIServer::IsClientDeveloper())
 		{
 			$error['trace'] = $thrown->getTrace();
 			$error['internalMessage'] = method_exists($thrown, 'getInternalMessage') ? $thrown->getInternalMessage() : $thrown->getMessage();

@@ -18,6 +18,11 @@ class DBResult
 		return $this->objects;
 	}
 
+	public static function CreateObject($result) 
+	{
+		
+	}
+
 	public static function CreateObjects($results, array $objects)
 	{
 		if (empty($results) || empty($objects))
