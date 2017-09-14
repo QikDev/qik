@@ -2,7 +2,8 @@
 
 namespace Qik\Core;
 
-use Qik\Core\{APIReturn};
+use Qik\Core\{APIResponse};
+use Qik\Qik;
 
 class APIRequest
 {
@@ -25,7 +26,7 @@ class APIRequest
 	
 	public function __construct($url = null, $type = 'POST', $contentType = 'application/x-www-form-urlencoded; charset=utf-8', $returnTransfer = true, $timeout = 1000)
 	{
-		$this->return = new APIReturn();
+		$this->return = new APIResponse();
 		
 		$this->url = $url;
 		$this->type = $type;
@@ -273,7 +274,7 @@ class APIRequest
 			$headers = substr($success, 0, $headerSize);
 			$body = substr($success, $headerSize);
 
-			$metaData = new stdClass();
+			$metaData = new \stdClass();
 			$metaData->headers = addcslashes($headers, Qik::$slashChars);
 			$metaData->status = curl_getinfo($this->handle, CURLINFO_HTTP_CODE);
 			$metaData->statusText = Qik::GetHTTPStatusText($metaData->status);
