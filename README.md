@@ -1,2 +1,2 @@
 # qik
-Lightweight micro PHP API framework
+Lightweight, micro PHP API framework
