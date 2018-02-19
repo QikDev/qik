@@ -57,7 +57,7 @@ class Utility
 		}
  
 		if (is_array($object)) {
-			return array_map('Utility::ConvertObjectToArray', $object);
+			return array_map('Qik\Utility\Utility::ConvertObjectToArray', $object);
 		}
 		else {
 			return $object;
