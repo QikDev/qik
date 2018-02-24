@@ -109,7 +109,7 @@ class APIResponse
 		return $data;
 	}
 	
-	public function AddData($key = null, $value = null)
+	public function AddData($key = null, $value = null, $convertSingleArrayToObject = false)
 	{
 		if ((is_object($value) && strtolower(Utility::GetBaseClassNameFromNamespace($value)) == 'dbresult') || (is_object($key) && strtolower(Utility::GetBaseClassNameFromNamespace($key)) == 'dbresult'))
 		{
@@ -134,8 +134,14 @@ class APIResponse
 					$this->AddData($i, $new);
 			}
 
-			if (is_object($value) && !empty($key))
-				$this->AddData($key, $add);
+            if (is_object($value) && !empty($key)) {
+
+                if (count($add) == 1 && $convertSingleArrayToObject)
+                    $this->AddData($key, $add[0]);
+                else
+                    $this->AddData($key, $add);
+            }
+            
 		}
 		elseif (is_object($key))
 		{
