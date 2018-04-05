@@ -141,7 +141,7 @@ class APIResponse
                 else
                     $this->AddData($key, $add);
             }
-            
+
 		}
 		elseif (is_object($key))
 		{

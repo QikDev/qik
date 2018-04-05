@@ -25,8 +25,11 @@ class DBResult
 
 	public static function CreateObjects($results, array $objects)
 	{
+	    /* removing this for normalizing behaviors
+	       returning multiple types creates some problems with type expectations down stream
 		if (empty($results) || empty($objects))
 			return array();
+	    */
 
 		$baseObjects = [];
 		$columns = [];
