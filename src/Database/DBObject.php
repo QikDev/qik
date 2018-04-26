@@ -36,10 +36,22 @@ class DBObject implements APIObject, \IteratorAggregate
 			$this->Get($pk);
 	}
 
-	public function getIterator() 
-	{
-		return new DBObjectIterator($this->fields);
-	}
+
+    public function getIterator()
+    {
+        // start with magic fields
+        $fields = $this->fields;
+
+        // now add manually added public scope fields
+        $refObjs = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+        foreach ($refObjs as $obj)
+        {
+            $key = $obj->name;
+            $fields[$key] = $this->$key;
+        }
+
+        return new DBObjectIterator($fields);
+    }
 
 	public function __isset($key)
 	{
@@ -198,19 +210,29 @@ class DBObject implements APIObject, \IteratorAggregate
 		return $this->GetColumns();
 	}
 
-	public function GetPublicModel() : array
-	{
-		$columns = $this->GetColumns();
-		$model = array();
+    public function GetPublicModel() : array
+    {
+        $columns = $this->GetColumns();
+        $model = array();
 
-		foreach ($columns as $key=>$column)
-		{
-			if (isset($column['Attributes']['accessibility']) && $column['Attributes']['accessibility'] == 'public')
-				$model[$key] = $column;
-		}
+        foreach ($columns as $key=>$column)
+        {
+            if (isset($column['Attributes']['accessibility']) && $column['Attributes']['accessibility'] == 'public')
+                $model[$key] = $column;
+        }
 
-		return $model;
-	}
+        // include vars defined on the object
+        $refObjs = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC);
+
+        foreach ($refObjs as $obj)
+        {
+            $key = $obj->name;
+            $column = [];
+            $model[$key] = $column;
+        }
+
+        return $model;
+    }
 
 	public function SetField(string $column = null, $value = null)
 	{
