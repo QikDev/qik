@@ -331,4 +331,22 @@ class DBObject implements APIObject, \IteratorAggregate
 
 		return $this;
 	}
+
+    public function ToSimpleObject()
+    {
+        $obj = new \stdClass();
+        $model = $this->GetPublicModel();
+
+        foreach ($model as $key => $col)
+        {
+            $obj->$key = $this->$key ?? null;
+        }
+
+        return $obj;
+    }
+
+    public function ToJson()
+    {
+        return json_encode($this->ToSimpleObject());
+    }
 }
