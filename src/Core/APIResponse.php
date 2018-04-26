@@ -108,31 +108,31 @@ class APIResponse
 
 		return $data;
 	}
-	
-	public function AddData($key = null, $value = null, $convertSingleArrayToObject = false)
-	{
-		if ((is_object($value) && strtolower(Utility::GetBaseClassNameFromNamespace($value)) == 'dbresult') || (is_object($key) && strtolower(Utility::GetBaseClassNameFromNamespace($key)) == 'dbresult'))
-		{
-			if (is_object($key))
-				$objects = $key->GetObjects();
-			else
-				$objects = $value->GetObjects();
 
-			$add = [];
-			foreach ($objects as $i=>$row)
-			{
-				$new = [];
-				foreach ($row as $k=>$val)
-				{
-					$data = $this->FilterModel($val);
-					$new[$k] = $data;
-				}
+    public function AddData($key = null, $value = null, $convertSingleArrayToObject = false)
+    {
+        if ((is_object($value) && strtolower(Utility::GetBaseClassNameFromNamespace($value)) == 'dbresult') || (is_object($key) && strtolower(Utility::GetBaseClassNameFromNamespace($key)) == 'dbresult'))
+        {
+            if (is_object($key))
+                $objects = $key->GetObjects();
+            else
+                $objects = $value->GetObjects();
 
-				if (is_object($value) && !empty($key))
-					$add[$i] = $new;
-				else
-					$this->AddData($i, $new);
-			}
+            $add = [];
+            foreach ($objects as $i=>$row)
+            {
+                $new = [];
+                foreach ($row as $k=>$val)
+                {
+                    $data = $this->FilterModel($val);
+                    $new[$k] = $data;
+                }
+
+                if (is_object($value) && !empty($key))
+                    $add[$i] = $new;
+                else
+                    $this->AddData($i, $new);
+            }
 
             if (is_object($value) && !empty($key)) {
 
@@ -142,56 +142,58 @@ class APIResponse
                     $this->AddData($key, $add);
             }
 
-		}
-		elseif (is_object($key))
-		{
-			if (!method_exists($key, 'GetPublicModel'))
-				throw new APIInternalError('Trying to add '.get_class($key).' to API response without defining proper model definition.');
+        }
+        elseif (is_object($key))
+        {
+            if (!method_exists($key, 'GetPublicModel'))
+                throw new APIInternalError('Trying to add '.get_class($key).' to API response without defining proper model definition.');
 
-			$model = $key->GetPublicModel();
-			$class = strtolower(Utility::GetBaseClassNameFromNamespace($key));
-			$obj = array();
-			foreach ($key as $k=>$v)
-			{
-				if (isset($model[$k]))
-					$obj[$k] = $v;
-			}
+            $model = $key->GetPublicModel();
+            $class = strtolower(Utility::GetBaseClassNameFromNamespace($key));
+            $obj = array();
+            foreach ($key as $k=>$v)
+            {
+                if (isset($model[$k]))
+                    $obj[$k] = $v;
+            }
 
-			return $this->AddData($class, $obj);
-		}
-		elseif (is_array($value))
-		{
-			$valArray = array();
+            return $this->AddData($class, $obj);
+        }
+        elseif (is_array($value))
+        {
+            $valArray = array();
 
-			foreach ($value as $k=>$val)
-			{
-				if (is_object($val))
-					$this->AddData($val);
-				elseif (is_array($val) || !is_string($val))
-					$valArray[trim($k)] = $val;
-				else
-					$valArray[trim($k)] = trim($val);
-			}
+            foreach ($value as $k=>$val)
+            {
+                if (is_object($val) && get_class($val) == 'stdClass')
+                    $this->AddData($k, $val);
+                else if (is_object($val))
+                    $this->AddData($val);
+                elseif (is_array($val) || !is_string($val))
+                    $valArray[trim($k)] = $val;
+                else
+                    $valArray[trim($k)] = trim($val);
+            }
 
-			$this->data[trim($key)] = $valArray;
-		}
-		elseif (!is_null($value))
-		{
-			if (is_bool($value) || !is_string($value))
-				return $this->data[trim($key)] = $value;
-			else
-				return $this->data[trim($key)] = trim($value);
-		}
-		elseif (!is_array($key) && is_null($value) && !is_object($key))
-		{
-			return $this->data[trim($key)] = $value;
-		}
-		elseif (!empty($key))
-		{
-			//xDeveloper::Log('Adding curl data '.$key);
-			return $this->data = $key;
-		}
-	}
+            $this->data[trim($key)] = $valArray;
+        }
+        elseif (!is_null($value))
+        {
+            if (is_bool($value) || !is_string($value))
+                return $this->data[trim($key)] = $value;
+            else
+                return $this->data[trim($key)] = trim($value);
+        }
+        elseif (!is_array($key) && is_null($value) && !is_object($key))
+        {
+            return $this->data[trim($key)] = $value;
+        }
+        elseif (!empty($key))
+        {
+            //xDeveloper::Log('Adding curl data '.$key);
+            return $this->data = $key;
+        }
+    }
 
 	public function AddHeader($key = null, $value = null, $code = null)
 	{
