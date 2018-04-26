@@ -163,10 +163,17 @@ class APIResponse
         {
             $valArray = array();
 
+            // is it an associative array?
+            $isAssoc = qArray::IsAssociative($value);
+
             foreach ($value as $k=>$val)
             {
-                if (is_object($val) && get_class($val) == 'stdClass')
-                    $this->AddData($k, $val);
+                if (is_object($val) && get_class($val) == 'stdClass') {
+                    if ($isAssoc)
+                        $this->AddData($k, $val);
+                    else
+                        $valArray[] = $val;
+                }
                 else if (is_object($val))
                     $this->AddData($val);
                 elseif (is_array($val) || !is_string($val))
