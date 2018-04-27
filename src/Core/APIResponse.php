@@ -5,7 +5,7 @@ namespace Qik\Core;
 use Qik\Qik;
 use Qik\Core\APIServer;
 use Qik\Exceptions\{APIException, APIInternalException};
-use Qik\Utility\{Utility};
+use Qik\Utility\{qArray,Utility};
 use Qik\Debug\{Debugger, Logger};
 
 class APIResponse
@@ -109,6 +109,7 @@ class APIResponse
 		return $data;
 	}
 
+    // TODO: probably refactor this to support full recursion
     public function AddData($key = null, $value = null, $convertSingleArrayToObject = false)
     {
         if ((is_object($value) && strtolower(Utility::GetBaseClassNameFromNamespace($value)) == 'dbresult') || (is_object($key) && strtolower(Utility::GetBaseClassNameFromNamespace($key)) == 'dbresult'))
@@ -170,7 +171,7 @@ class APIResponse
             {
                 if (is_object($val) && get_class($val) == 'stdClass') {
                     if ($isAssoc)
-                        $this->AddData($k, $val);
+                        $valArray[trim($k)] = $val;
                     else
                         $valArray[] = $val;
                 }

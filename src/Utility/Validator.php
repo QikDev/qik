@@ -91,6 +91,12 @@ class Validator
 		if (empty($val))
 			throw new APIException($error ?? "Value cannot be empty", $errorTag);
 	}
+
+	public static function ValidateNotNull($val = null, $error = null, $errorTag = null)
+    {
+        if (is_null($val))
+            throw new APIException($error ?? "Value cannot be null", $errorTag);
+    }
 	
 	public static function ValidateDate($date = null, $delimiter = null, $format = 'auto', $error = null, $errorTag = null)
 	{
