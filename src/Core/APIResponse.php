@@ -147,7 +147,7 @@ class APIResponse
         elseif (is_object($key))
         {
             if (!method_exists($key, 'GetPublicModel'))
-                throw new APIInternalError('Trying to add '.get_class($key).' to API response without defining proper model definition.');
+                throw new APIInternalException('Trying to add '.get_class($key).' to API response without defining proper model definition.');
 
             $model = $key->GetPublicModel();
             $class = strtolower(Utility::GetBaseClassNameFromNamespace($key));
