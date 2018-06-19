@@ -23,7 +23,8 @@ class DBRepository extends DBQuery
         return [
             '_page' => $this->paginationPage,
             '_pageSize' => $this->paginationSize,
-            '_totalRows' => $this->queryTotalRows,
+            '_totalPages' => ceil($this->queryTotalRows / $this->paginationSize),
+            '_totalRows' => $this->queryTotalRows
         ];
     }
 
