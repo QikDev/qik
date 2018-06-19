@@ -14,6 +14,7 @@ class APIResponse
 	public $headers = array();
 	public $errors = array();
 	public $success = true;
+	public $metadata = null;
 	public $cacheLength = 10;
 
 	public function __construct()
@@ -107,6 +108,11 @@ class APIResponse
 			$data = $object;
 
 		return $data;
+	}
+
+	public function addMetadata($key, $value)
+	{
+		$this->metadata[$key] = $value;
 	}
 
     // TODO: probably refactor this to support full recursion
@@ -286,6 +292,13 @@ class APIResponse
 		{
 			$data['success'] = $this->success;
 			$data['errors'] = $this->errors;
+
+			if (!empty($this->metadata))
+				foreach($this->metadata as $key => $value) {
+					if (!isset($data[$key]))
+						$data[$key] = $value;
+				}
+
 			$data['data'] = $this->data;
 
 			if (APIServer::IsClientDeveloper() || APIServer::IsDevelopment())
