@@ -312,7 +312,7 @@ class APIResponse
 		
 		//ob_clean(); //DO NOT REMOVE THIS.  THE RESPONSE MAY/WILL BE CUT OFF BECAUSE THERE ARE EXTRA BITS IN THE BUFFER AND CONTENT-LENGTH WILL BE SHORT
 
-		$encoded = json_encode($data);//xJson::Encode($data, false, $escapeChars, $stripChars); //DO NOT USE json_encode
+		$encoded = json_encode($data, JSON_NUMERIC_CHECK);//xJson::Encode($data, false, $escapeChars, $stripChars); //DO NOT USE json_encode
 
 		//echo 'cache length : '.$cacheLength.'<br />';
 		if ($cacheLength && $cacheLength > 0 && strtoupper($_SERVER['REQUEST_METHOD']) == 'GET')
