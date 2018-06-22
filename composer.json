@@ -16,6 +16,6 @@
         }
     },
     "require": {
-        "mistevs/fluentpdo": "1.2.*"
+        "qikdev/fluentpdo": "1.2.*"
     }
 }
