@@ -4,7 +4,7 @@ namespace Qik\Database;
 
 use Qik\Core\APIObject;
 use Qik\Utility\Utility;
-use Qik\Database\{DBManager, DBConnection, DBObjectIterator};
+use Qik\Database\{DBManager, DBConnection, DBObjectIterator, DBQuery};
 use Qik\Exceptions\Internal\{DBObjectPrimaryKeyNotFound, DbObjectColumnNotFound, DBObjectInsertError};
 
 class DBObject implements APIObject, \IteratorAggregate
@@ -102,7 +102,7 @@ class DBObject implements APIObject, \IteratorAggregate
 			return true;
 
 		//$this->Query('SELECT * FROM '.$this->table);
-		$sql = 'SHOW KEYS FROM '.$this->table.' WHERE Key_name = \'primary\'';
+		$sql = 'SHOW KEYS FROM `'.$this->table.'` WHERE Key_name = \'primary\'';
 		$columns = $this->Query($sql)->FetchAll();
 		foreach ($columns as $col)
 		{
@@ -348,5 +348,25 @@ class DBObject implements APIObject, \IteratorAggregate
     public function ToJson()
     {
         return json_encode($this->ToSimpleObject());
+    }
+
+    /**
+     * @param array $values
+     * @return bool
+     */
+    protected function InsertOrUpdate(array $values) : bool
+    {
+        $this->RequireConnection();
+
+        $pk = DBQuery::Build()
+            ->insertInto($this->GetTable())
+            ->onDuplicateKeyUpdate($values)
+            ->values($this->fields)
+            ->Execute();
+
+        $this->{$this->GetPrimaryKeyColumn()} = $pk;
+        $this->primaryKeyValue = $pk;
+
+        return $pk;
     }
 }
