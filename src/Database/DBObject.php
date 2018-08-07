@@ -317,6 +317,10 @@ class DBObject implements APIObject, \IteratorAggregate
 	{
 		$this->RequireConnection();
 
+		if (empty($this->{$this->GetPrimaryKeyColumn()})) {
+		    return false;
+        }
+
 		$result = DBQuery::Build()->deleteFrom($this->GetTable(), $this->{$this->GetPrimaryKeyColumn()})->Execute();
 
 		return $result;
