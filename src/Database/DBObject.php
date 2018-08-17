@@ -102,7 +102,13 @@ class DBObject implements APIObject, \IteratorAggregate
 			return true;
 
 		//$this->Query('SELECT * FROM '.$this->table);
-		$sql = 'SHOW KEYS FROM `'.$this->table.'` WHERE Key_name = \'primary\'';
+        $sql = 'SHOW KEYS FROM ';
+        if (strpos($this->table,'`') !== false)
+            $sql .= $this->table;
+        else
+            $sql .= '`'.$this->table.'`';
+
+        $sql .= ' WHERE Key_name = \'primary\'';
 		$columns = $this->Query($sql)->FetchAll();
 		foreach ($columns as $col)
 		{
