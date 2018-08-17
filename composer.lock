@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "018672dc78228558c5c2922e3888707d",
+    "content-hash": "dc55993b7de83d446ef4296f3623eb98",
     "packages": [
         {
             "name": "qikdev/fluentpdo",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QikDev/fluentpdo.git",
-                "reference": "8fa1bb8b4123df73a40311d378df27200be4a346"
+                "reference": "7a635e78813587520c1ffeb7c7369b6d6f9101ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QikDev/fluentpdo/zipball/8fa1bb8b4123df73a40311d378df27200be4a346",
-                "reference": "8fa1bb8b4123df73a40311d378df27200be4a346",
+                "url": "https://api.github.com/repos/QikDev/fluentpdo/zipball/7a635e78813587520c1ffeb7c7369b6d6f9101ff",
+                "reference": "7a635e78813587520c1ffeb7c7369b6d6f9101ff",
                 "shasum": ""
             },
             "type": "library",
@@ -34,17 +34,17 @@
             "authors": [
                 {
                     "name": "Mike Sevens",
-                    "homepage": "https://mistevs.io/"
+                    "homepage": "https://qikdev.io/"
                 }
             ],
             "description": "FluentPDO is small PHP library for rapid query building. Killer feature is smart join builder which generates joins automatically.",
-            "homepage": "https://github.com/mistevs/fluentpdo",
+            "homepage": "https://github.com/qikdev/fluentpdo",
             "keywords": [
                 "database",
                 "dbal",
                 "pdo"
             ],
-            "time": "2018-06-22T14:31:26+00:00"
+            "time": "2018-08-07T11:43:02+00:00"
         }
     ],
     "packages-dev": [],
