@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a0d84d51f2517629a1aa64a3c989cd4",
+    "content-hash": "018672dc78228558c5c2922e3888707d",
     "packages": [
         {
-            "name": "mistevs/fluentpdo",
-            "version": "1.2.2",
+            "name": "qikdev/fluentpdo",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mistevs/fluentpdo.git",
-                "reference": "82c4f82e23fe0e4d09ca793698fa7ae7d1cc6c9f"
+                "url": "https://github.com/QikDev/fluentpdo.git",
+                "reference": "8fa1bb8b4123df73a40311d378df27200be4a346"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mistevs/fluentpdo/zipball/82c4f82e23fe0e4d09ca793698fa7ae7d1cc6c9f",
-                "reference": "82c4f82e23fe0e4d09ca793698fa7ae7d1cc6c9f",
+                "url": "https://api.github.com/repos/QikDev/fluentpdo/zipball/8fa1bb8b4123df73a40311d378df27200be4a346",
+                "reference": "8fa1bb8b4123df73a40311d378df27200be4a346",
                 "shasum": ""
             },
             "type": "library",
@@ -44,7 +44,7 @@
                 "dbal",
                 "pdo"
             ],
-            "time": "2017-07-09T15:47:30+00:00"
+            "time": "2018-06-22T14:31:26+00:00"
         }
     ],
     "packages-dev": [],
