@@ -224,6 +224,19 @@ class APIRequest
 		$this->headers[$key] = $value;
 	}
 
+	public function GetHeader($key = null)
+	{
+		if (empty($key)) {
+			return $this->headers;
+		}
+
+		if (isset($this->headers[$key])) {
+			return $this->headers[$key];
+		}
+
+		return null;
+	}
+
 	public function GetBuiltData()
 	{
 		return $this->_builtData;	
