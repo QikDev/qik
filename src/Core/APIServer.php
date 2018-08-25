@@ -116,7 +116,7 @@ class APIServer
 			}
 
 			$data = Utility::ConvertObjectToArray($this->_requestData);
-			if (count($data) > 0)
+			if (is_array($data) && count($data) > 0)
 				$variables = array_merge($variables, $data);
 		}
 		else
