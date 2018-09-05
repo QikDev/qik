@@ -85,7 +85,7 @@ class DBObject implements APIObject, \IteratorAggregate
 			if ($key == $this->primaryKeyColumn)
 				$this->primaryKeyValue = $val;
 			
-			$this->$fields[$key] = $val;
+			$this->fields[$key] = $val;
 		}
 
 		return true;
