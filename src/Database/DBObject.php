@@ -12,6 +12,7 @@ class DBObject implements APIObject, \IteratorAggregate
 	private static $columns = [];
 	private static $connection;
 	protected $fields = [];
+	protected $changed = [];
 
 	protected $table;
 	protected $primaryKeyColumn;
@@ -66,6 +67,7 @@ class DBObject implements APIObject, \IteratorAggregate
 	public function __set($key, $val)
 	{
 		$this->fields[$key] = $val;
+		$this->changed[$key] = $val;
 	}
 
 	public function __get($key)
@@ -83,7 +85,7 @@ class DBObject implements APIObject, \IteratorAggregate
 			if ($key == $this->primaryKeyColumn)
 				$this->primaryKeyValue = $val;
 			
-			$this->{$key} = $val;
+			$this->$fields[$key] = $val;
 		}
 
 		return true;
@@ -314,7 +316,7 @@ class DBObject implements APIObject, \IteratorAggregate
 	{
 		$this->RequireConnection();
 
-		$result = DBQuery::Build()->update($this->GetTable())->set($this->fields)->where($this->GetPrimaryKeyColumn(), $this->{$this->GetPrimaryKeyColumn()})->Execute();
+		$result = DBQuery::Build()->update($this->GetTable())->set($this->changed)->where($this->GetPrimaryKeyColumn(), $this->{$this->GetPrimaryKeyColumn()})->Execute();
 
 		return $result;
 	}
