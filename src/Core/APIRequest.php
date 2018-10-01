@@ -53,8 +53,10 @@ class APIRequest
 		$this->SetOption(CURLOPT_TIMEOUT, $this->timeout);
 		//$this->SetOption(CURLOPT_VERBOSE, true);
 		$this->SetOption(CURLOPT_HEADER, true);
-		
-		$this->AddHeader('Content-Type', $this->_contentType);
+
+		// only send content type on non-GETs
+		if (strtolower($this->type) !== 'get')
+    		$this->AddHeader('Content-Type', $this->_contentType);
 	}
 	
 	public function SetType($type = 'POST')

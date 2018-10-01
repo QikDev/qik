@@ -57,7 +57,7 @@ abstract class APIController implements APIControllerInterface
 
 	public function SendUnauthorized()
 	{
-		$this->return->SendUnauthorized();
+		$this->response->SendUnauthorized();
 	}
 
 	public function RequireAuthentication()
