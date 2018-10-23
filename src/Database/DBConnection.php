@@ -9,7 +9,7 @@ class DBConnection extends \PDO
 {
 	private $handler;
 
-	public function __construct(string $host = null, string $user = null, string $password = null, string $db = null, string $type = 'mysql', $persist = true)
+	public function __construct(string $host = null, string $user = null, string $password = null, string $db = null, string $type = 'mysql', $persist = false)
 	{
 		try {
 			parent::__construct($type.':host='.$host.';dbname='.$db, $user, $password, ($persist ? [\PDO::ATTR_PERSISTENT => true] : []));

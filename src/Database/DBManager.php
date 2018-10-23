@@ -10,10 +10,10 @@ class DBManager
 	private static $tablePrefix;
 	private static $connections = [];
 
-	public static function CreateConnection(string $host = null, string $user = null, string $password = null, string $db = null, string $type = 'mysql') 
+	public static function CreateConnection(string $host = null, string $user = null, string $password = null, string $db = null, string $type = 'mysql', $persist = false)
 	{
 		try {
-			$connection = new DBConnection($host, $user, $password, $db, $type);
+			$connection = new DBConnection($host, $user, $password, $db, $type, $persist);
 			self::$connections[$db] = $connection;
 
 			return $connection;
