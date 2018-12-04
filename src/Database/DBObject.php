@@ -30,11 +30,18 @@ class DBObject implements APIObject, \IteratorAggregate
 		if (empty($this->table))
 			$this->DetermineTable();
 
-		if (!is_array($pk) && !is_object($pk))
+		if (!is_array($pk) && !is_object($pk)) {
 			$this->primaryKeyValue = $pk;
-
-		if (!empty($pk))
 			$this->Get($pk);
+		}
+		elseif (is_array($pk)) {
+			$this->SetFields($pk);
+		}
+		elseif (is_object($pk))  {
+
+		} elseif (!empty($pk)) {
+			
+		}
 	}
 
 
