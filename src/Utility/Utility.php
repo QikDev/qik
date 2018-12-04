@@ -30,9 +30,13 @@ class Utility
 
 	public static function IsJson($string = null) 
 	{
- 		json_decode($string);
+		if (!is_string($string)) {
+			return false;
+		}
 
- 		return (json_last_error() == JSON_ERROR_NONE);
+		json_decode($string);
+
+		return (json_last_error() == JSON_ERROR_NONE);
 	}
 
 	public static function ConvertObjectToArray($object = null, $conditional = null)

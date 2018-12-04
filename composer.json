@@ -3,6 +3,8 @@
     "description": "A micro PHP API framework",
     "type": "library",
     "license": "MIT",
+    "minimum-stability": "dev",
+
     "authors": [
         {
             "name": "Mike Stevens",

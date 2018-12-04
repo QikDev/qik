@@ -1,6 +1,6 @@
 {
 	"minimum-stability" : "dev",
-    "name": "mistevs/qik",
+    "name": "qikdev/qik",
     "description": "A micro PHP API framework",
     "type": "library",
     "license": "MIT",
