@@ -276,6 +276,7 @@ class APIRequest
 		if ($this->type != 'GET')
 			$this->AddHeader('Content-Length', $this->_contentLength); //content length must always be sent
 
+		$sendHeaders = array();
 		foreach ($this->headers as $key=>$val)
 			$sendHeaders[] = $key.$val;
 
