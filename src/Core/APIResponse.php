@@ -152,19 +152,19 @@ class APIResponse
         }
         elseif (is_object($key))
         {
-            if (!method_exists($key, 'GetPublicModel'))
-                throw new APIInternalException('Trying to add '.get_class($key).' to API response without defining proper model definition.');
+            if (strtolower(get_class($key)) !== 'stdclass') {
+				if (!method_exists($key, 'GetData')) {
+					throw new APIInternalException('Trying to add '.get_class($key).' to API response without defining proper model definition.');
+				}
+				
+				$data = $key->GetData();
+			} else {
+				$data = $key;
+			}
 
-            $model = $key->GetPublicModel();
-            $class = strtolower(Utility::GetBaseClassNameFromNamespace($key));
-            $obj = array();
-            foreach ($key as $k=>$v)
-            {
-                if (isset($model[$k]))
-                    $obj[$k] = $v;
-            }
+			$class = strtolower(Utility::GetBaseClassNameFromNamespace($key));
 
-            return $this->AddData($class, $obj);
+            return $this->AddData($class, $data);
         }
         elseif (is_array($value))
         {
@@ -181,8 +181,21 @@ class APIResponse
                     else
                         $valArray[] = $val;
                 }
-                else if (is_object($val))
-                    $this->AddData($val);
+                else if (is_object($val)) {
+					if (strtolower(get_class($val)) !== 'stdclass') {
+						if (!method_exists($val, 'GetData')) {
+							throw new APIInternalException('Trying to add '.get_class($val).' to API response without defining proper model definition.');
+						}
+						
+						$data = $val->GetData();
+					} else {
+						$data = $val;
+					}
+		
+					$class = strtolower(Utility::GetBaseClassNameFromNamespace($val));
+
+                    $valArray[trim($k)] = $data;
+				}
                 elseif (is_array($val) || !is_string($val))
                     $valArray[trim($k)] = $val;
                 else

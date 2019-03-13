@@ -247,7 +247,21 @@ class DBObject implements APIObject, \IteratorAggregate
         }
 
         return $model;
-    }
+	}
+	
+	public function GetData() : array 
+	{
+		$model = $this->GetPublicModel();
+		$obj = array();
+
+		foreach ($this as $k=>$v)
+		{
+			if (isset($model[$k]))
+				$obj[$k] = $v;
+		}
+
+		return $obj;
+	}
 
 	public function SetField(string $column = null, $value = null)
 	{
