@@ -30,11 +30,18 @@ class DBObject implements APIObject, \IteratorAggregate
 		if (empty($this->table))
 			$this->DetermineTable();
 
-		if (!is_array($pk) && !is_object($pk))
+		if (!is_array($pk) && !is_object($pk)) {
 			$this->primaryKeyValue = $pk;
-
-		if (!empty($pk))
 			$this->Get($pk);
+		}
+		elseif (is_array($pk)) {
+			$this->SetFields($pk);
+		}
+		elseif (is_object($pk))  {
+
+		} elseif (!empty($pk)) {
+			
+		}
 	}
 
 
@@ -240,7 +247,21 @@ class DBObject implements APIObject, \IteratorAggregate
         }
 
         return $model;
-    }
+	}
+	
+	public function GetData() : array 
+	{
+		$model = $this->GetPublicModel();
+		$obj = array();
+
+		foreach ($this as $k=>$v)
+		{
+			if (isset($model[$k]))
+				$obj[$k] = $v;
+		}
+
+		return $obj;
+	}
 
 	public function SetField(string $column = null, $value = null)
 	{

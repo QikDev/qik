@@ -11,6 +11,6 @@ class APIInternalException extends APIException
 		$iMessage = (!empty($internalMessage) ? $internalMessage : 'An unknown error occurred');
 		$eMessage = (!empty($externalMessage) ? $externalMessage : 'An unknown error occurred');
 
-		return parent::__construct($eMessage, $errorCode, $responseCode, $iMessage);
+		return parent::__construct($eMessage, 'global', $errorCode, $responseCode, $iMessage);
 	}
 }
