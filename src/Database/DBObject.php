@@ -306,6 +306,9 @@ class DBObject implements APIObject, \IteratorAggregate
 
 		$pk = DBQuery::Build()->insertInto($this->GetTable())->values($this->fields)->Execute();
 
+		if (intval($pk) == $pk)
+		    $pk = (int)$pk;
+
 		$this->{$this->GetPrimaryKeyColumn()} = $pk;
 		$this->primaryKeyValue = $pk;
 
