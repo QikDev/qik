@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f6dbb6d675f27a363b5dbbc860a3e3a",
+    "content-hash": "56d1cedd40fa1f86da1106083c7de999",
     "packages": [
         {
             "name": "qikdev/fluentpdo",
-            "version": "1.2.5",
+            "version": "1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QikDev/fluentpdo.git",
-                "reference": "a6b94ae5df08ec34f691d05f4834daf60afa158a"
+                "reference": "c88872909e8f078305dc02bf9f861e54202194d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QikDev/fluentpdo/zipball/a6b94ae5df08ec34f691d05f4834daf60afa158a",
-                "reference": "a6b94ae5df08ec34f691d05f4834daf60afa158a",
+                "url": "https://api.github.com/repos/QikDev/fluentpdo/zipball/c88872909e8f078305dc02bf9f861e54202194d9",
+                "reference": "c88872909e8f078305dc02bf9f861e54202194d9",
                 "shasum": ""
             },
             "type": "library",
@@ -44,7 +44,7 @@
                 "dbal",
                 "pdo"
             ],
-            "time": "2019-04-04T20:06:10+00:00"
+            "time": "2019-04-10T16:14:23+00:00"
         }
     ],
     "packages-dev": [],
