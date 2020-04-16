@@ -166,7 +166,7 @@ class APIServer
 						$var = $_PUTDELETE[$index];
 				}
 
-				if (empty($var))
+				if (is_null($var))
 					return $default;
 
 				if ($decodeJSON && $obj = Utility::IsJSON($var) && substr($var, 0, 1) == '{') //IsJSON() will return a decoded json string as an object or false
