@@ -38,7 +38,7 @@ class URI
 	
 	public static function GetFull()
 	{
-		$s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
+		$s = (empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on")) ? "s" : "";
 		$sp = (isset($_SERVER['SERVER_PROTOCOL']) ? strtolower($_SERVER["SERVER_PROTOCOL"]) : '');
 		$protocol = substr($sp, 0, strpos($sp, "/")) . $s;
 		$port = isset($_SERVER['SERVER_PORT']) && ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".(isset($_SERVER["SERVER_PORT"]) ? $_SERVER['SERVER_PORT'] : ''));
