@@ -1,14 +1,14 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56d1cedd40fa1f86da1106083c7de999",
+    "content-hash": "47c19640718e1fda0d05dd9b40095d7e",
     "packages": [
         {
             "name": "qikdev/fluentpdo",
-            "version": "1.2.6",
+            "version": "dev-php8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/QikDev/fluentpdo.git",
@@ -44,15 +44,21 @@
                 "dbal",
                 "pdo"
             ],
+            "support": {
+                "source": "https://github.com/QikDev/fluentpdo/tree/1.2.6"
+            },
             "time": "2019-04-10T16:14:23+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "qikdev/fluentpdo": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
 }

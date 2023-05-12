@@ -18,6 +18,6 @@
         }
     },
     "require": {
-        "qikdev/fluentpdo": "1.2.6"
+        "qikdev/fluentpdo": "dev-php8"
     }
 }
