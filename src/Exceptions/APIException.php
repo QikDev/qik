@@ -22,7 +22,7 @@ class APIException extends \Exception
 
 		$this->internalMessage = $internalMessage;
 
-		return parent::__construct($iMessage, $errorCode, $previous);
+		return parent::__construct($iMessage, $iErrorCode, $previous);
 	}
 
 	public function getResponseCode()

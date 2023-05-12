@@ -30,7 +30,7 @@ class DBConnection extends \PDO
 		return $statement;
 	}
 
-	function Query($sql = NULL, $cacheKey = null, $cacheLength = 300) : \PDOStatement
+	function Query($sql = NULL, ?int $fetchMode = null, mixed ...$fetchModeArgs) : \PDOStatement|false
 	{
 		$statement = $this->Prepare($sql);
 		$statement = $this->Execute($statement);

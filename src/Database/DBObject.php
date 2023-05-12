@@ -45,7 +45,7 @@ class DBObject implements APIObject, \IteratorAggregate
 	}
 
 
-    public function getIterator()
+    public function getIterator() : \IteratorAggregate
     {
         // start with magic fields
         $fields = $this->fields;

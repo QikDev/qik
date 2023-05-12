@@ -294,7 +294,7 @@ class APIResponse
 		//exit;
 
 		foreach($this->headers as $key=>$val)
-			header($key.$val['value'], true, $val['code']);
+			header($key.$val['value'], true, $val['code'] ?? 0);
 
 		Debugger::SetTimestamp('return_send'); //need to do this here so it gets encoded in the response
 

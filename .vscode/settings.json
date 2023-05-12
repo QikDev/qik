@@ -1,0 +1,4 @@
+{
+    "php.validate.executablePath": "C:\\php-8.2.6-Win32-vs16-x64\\php.exe",
+    "php.suggest.basic": true
+}
