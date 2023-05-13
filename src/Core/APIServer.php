@@ -20,6 +20,8 @@ class APIServer
 
 	public 		$postCacheCallback;
 
+	public $_requestData;
+
 
 	protected 	$response;
 

@@ -310,7 +310,7 @@ class APIRequest
 			else
 				$this->return->data = Qik::AddSlashes($body);
 				
-			$this->return->metaData = $metaData;
+			$this->return->metadata = $metaData;
 			$this->return->body = $body;
 
 			$headerArray = array();
@@ -425,7 +425,7 @@ class APIRequest
 		if (empty($key))
 			return;
 		
-		return stripcslashes($this->return->metaData->$key) ?? null;
+		return stripcslashes($this->return->metadata->$key) ?? null;
 	}
 
 	public function GetReturnData($key = null)
