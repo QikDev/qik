@@ -15,6 +15,7 @@ class APIResponse
 	public $errors = array();
 	public $success = true;
 	public $metadata = null;
+	public $body = null;
 	public $cacheLength = 10;
 
 	public function __construct()
