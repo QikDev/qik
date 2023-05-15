@@ -156,7 +156,7 @@ class APIRequest
 				if (is_array($val) || is_object($val))
 					$valArray[trim($k ?? '')] = $val;
 				else
-					$valArray[trim($k ?? '')] = trim($val);
+					$valArray[trim($k ?? '')] = trim($val ?? '');
 			}
 				
 			$this->data[trim($key ?? '')] = $valArray;
