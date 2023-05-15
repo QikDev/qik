@@ -39,7 +39,7 @@ class URI
 	public static function GetFull()
 	{
 		$s = (empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on")) ? "s" : "";
-		$sp = (isset($_SERVER['SERVER_PROTOCOL']) ? strtolower($_SERVER["SERVER_PROTOCOL"]) : '');
+		$sp = (isset($_SERVER['SERVER_PROTOCOL']) ? strtolower($_SERVER["SERVER_PROTOCOL"] ?? '') : '');
 		$protocol = substr($sp, 0, strpos($sp, "/")) . $s;
 		$port = isset($_SERVER['SERVER_PORT']) && ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".(isset($_SERVER["SERVER_PORT"]) ? $_SERVER['SERVER_PORT'] : ''));
 		$host = (isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST']))? $_SERVER['HTTP_HOST']:$_SERVER['SERVER_NAME'];
@@ -50,7 +50,7 @@ class URI
 	public static function GetControllerName($uri = null) 
 	{
 		$uri = URI::GetParts('path');
-		$uri = trim($uri, '/');
+		$uri = trim($uri ?? '', '/');
 		$parts = explode('/', $uri);
 
 		$controllerParts = explode('\\', $parts[1]);

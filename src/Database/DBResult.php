@@ -33,15 +33,15 @@ class DBResult
 
 		$baseObjects = [];
 		$columns = [];
-		$primaryClass = strtolower(Utility::GetBaseClassNameFromNamespace($objects[0]));
+		$primaryClass = strtolower(Utility::GetBaseClassNameFromNamespace($objects[0]) ?? '');
 		foreach ($objects as $object)
 		{
-			$baseObjects[strtolower(Utility::GetBaseClassNameFromNamespace($object))] = $object;
+			$baseObjects[strtolower(Utility::GetBaseClassNameFromNamespace($object) ?? '')] = $object;
 			$cols = $object->GetColumns();
 			foreach ($cols as $key=>$val)
 			{
 				//if (!isset($columns[$key]))
-				$columns[$key] = $columns[$key] ?? strtolower(Utility::GetBaseClassNameFromNamespace($object));
+				$columns[$key] = $columns[$key] ?? strtolower(Utility::GetBaseClassNameFromNamespace($object) ?? '');
 
 				//array_push($columns[$key], Utility::GetBaseClassNameFromNamespace($object));
 			}
@@ -80,19 +80,19 @@ class DBResult
 
 					if (!empty($subclass))
 					{
-						if (!isset($objectified[strtolower($class)]->{$subclass}))
+						if (!isset($objectified[strtolower($class ?? '')]->{$subclass}))
 						{
-							$name = get_class($objectified[strtolower($class)]);
-							$objectified[strtolower($class)]->{$subclass} = new $name;
+							$name = get_class($objectified[strtolower($class ?? '')]);
+							$objectified[strtolower($class ?? '')]->{$subclass} = new $name;
 						}
 
-						$objectified[strtolower($class)]->{$subclass}->{$field} = $val;
+						$objectified[strtolower($class ?? '')]->{$subclass}->{$field} = $val;
 					}
-					elseif (isset($objectified[strtolower($class)]))
-						$objectified[strtolower($class)]->{$field} = $val;
+					elseif (isset($objectified[strtolower($class ?? '')]))
+						$objectified[strtolower($class ?? '')]->{$field} = $val;
 				}
 				elseif (isset($columns[$key]) && !isset($objectified[$columns[$key]]->{$key}))
-					$objectified[strtolower($columns[$key])]->{$key} = $val;
+					$objectified[strtolower($columns[$key] ?? '')]->{$key} = $val;
 			}
 
 			$object = $objectified;

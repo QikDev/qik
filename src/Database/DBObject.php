@@ -121,7 +121,7 @@ class DBObject implements APIObject, \IteratorAggregate
 		$columns = $this->Query($sql)->FetchAll();
 		foreach ($columns as $col)
 		{
-			if (strtolower($col['Key_name']) == 'primary')
+			if (strtolower($col['Key_name'] ?? '') == 'primary')
 			{
 				$this->primaryKeyColumn = $col['Column_name'];
 				$this->{$this->primaryKeyColumn} ?? $this->primaryKeyValue;
@@ -136,7 +136,7 @@ class DBObject implements APIObject, \IteratorAggregate
 
 	public function DetermineTable()
 	{
-		$this->table = strtolower($this->prefix.Utility::GetBaseClassNameFromNamespace($this));
+		$this->table = strtolower($this->prefix.Utility::GetBaseClassNameFromNamespace($this) ?? '');
 	}
 
 	public function GetTable() : string

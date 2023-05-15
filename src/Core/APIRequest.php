@@ -55,7 +55,7 @@ class APIRequest
 		$this->SetOption(CURLOPT_HEADER, true);
 
 		// only send content type on non-GETs
-		if (strtolower($this->type) !== 'get')
+		if (strtolower($this->type ?? '') !== 'get')
     		$this->AddHeader('Content-Type', $this->_contentType);
 	}
 	
@@ -154,21 +154,21 @@ class APIRequest
 			foreach ($value as $k=>$val)
 			{
 				if (is_array($val) || is_object($val))
-					$valArray[trim($k)] = $val;
+					$valArray[trim($k ?? '')] = $val;
 				else
-					$valArray[trim($k)] = trim($val);
+					$valArray[trim($k ?? '')] = trim($val);
 			}
 				
-			$this->data[trim($key)] = $valArray;
+			$this->data[trim($key ?? '')] = $valArray;
 		}
 		elseif (!is_null($value))
 		{
 			if (is_bool($value))
-				$this->data[trim($key)] = $value;
+				$this->data[trim($key ?? '')] = $value;
 			else
 			{
-				$key = trim($key);
-				$value = trim($value);
+				$key = trim($key ?? '');
+				$value = trim($value ?? '');
 				
 				$this->data[$key] = $value;
 			}
@@ -333,12 +333,12 @@ class APIRequest
 						array_shift($parts);
 						$value = implode(':', $parts);
 
-						$headerArray[$key] = trim($value);
+						$headerArray[$key] = trim($value ?? '');
 					}
 					else
 					{
 						if (isset($parts[1]))
-							$headerArray[$parts[0]] = trim($parts[1]);
+							$headerArray[$parts[0]] = trim($parts[1] ?? '');
 					}
 				}
 			}

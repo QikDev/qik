@@ -119,7 +119,7 @@ class APIResponse
     // TODO: probably refactor this to support full recursion
     public function AddData($key = null, $value = null, $convertSingleArrayToObject = false)
     {
-        if ((is_object($value) && strtolower(Utility::GetBaseClassNameFromNamespace($value)) == 'dbresult') || (is_object($key) && strtolower(Utility::GetBaseClassNameFromNamespace($key)) == 'dbresult'))
+        if ((is_object($value) && strtolower(Utility::GetBaseClassNameFromNamespace($value) ?? '') == 'dbresult') || (is_object($key) && strtolower(Utility::GetBaseClassNameFromNamespace($key) ?? '') == 'dbresult'))
         {
             if (is_object($key))
                 $objects = $key->GetObjects();
@@ -153,7 +153,7 @@ class APIResponse
         }
         elseif (is_object($key))
         {
-            if (strtolower(get_class($key)) !== 'stdclass') {
+            if (strtolower(get_class($key) ?? '') !== 'stdclass') {
 				if (!method_exists($key, 'GetData')) {
 					throw new APIInternalException('Trying to add '.get_class($key).' to API response without defining proper model definition.');
 				}
@@ -163,7 +163,7 @@ class APIResponse
 				$data = $key;
 			}
 
-			$class = strtolower(Utility::GetBaseClassNameFromNamespace($key));
+			$class = strtolower(Utility::GetBaseClassNameFromNamespace($key) ?? '');
 
             return $this->AddData($class, $data);
         }
@@ -178,12 +178,12 @@ class APIResponse
             {
                 if (is_object($val) && get_class($val) == 'stdClass') {
                     if ($isAssoc)
-                        $valArray[trim($k)] = $val;
+                        $valArray[trim($k ?? '')] = $val;
                     else
                         $valArray[] = $val;
                 }
                 else if (is_object($val)) {
-					if (strtolower(get_class($val)) !== 'stdclass') {
+					if (strtolower(get_class($val) ?? '') !== 'stdclass') {
 						if (!method_exists($val, 'GetData')) {
 							throw new APIInternalException('Trying to add '.get_class($val).' to API response without defining proper model definition.');
 						}
@@ -193,28 +193,28 @@ class APIResponse
 						$data = $val;
 					}
 		
-					$class = strtolower(Utility::GetBaseClassNameFromNamespace($val));
+					$class = strtolower(Utility::GetBaseClassNameFromNamespace($val) ?? '');
 
-                    $valArray[trim($k)] = $data;
+                    $valArray[trim($k ?? '')] = $data;
 				}
                 elseif (is_array($val) || !is_string($val))
-                    $valArray[trim($k)] = $val;
+                    $valArray[trim($k ?? '')] = $val;
                 else
-                    $valArray[trim($k)] = trim($val);
+                    $valArray[trim($k ?? '')] = trim($val ?? '');
             }
 
-            $this->data[trim($key)] = $valArray;
+            $this->data[trim($key ?? '')] = $valArray;
         }
         elseif (!is_null($value))
         {
             if (is_bool($value) || !is_string($value))
-                return $this->data[trim($key)] = $value;
+                return $this->data[trim($key ?? '')] = $value;
             else
-                return $this->data[trim($key)] = trim($value);
+                return $this->data[trim($key ?? '')] = trim($value ?? '');
         }
         elseif (!is_array($key) && is_null($value) && !is_object($key))
         {
-            return $this->data[trim($key)] = $value;
+            return $this->data[trim($key ?? '')] = $value;
         }
         elseif (!empty($key))
         {
@@ -228,13 +228,13 @@ class APIResponse
 		if (empty($key) || is_null($value))
 			return false;
 
-		$key = trim($key);
+		$key = trim($key ?? '');
 		if (substr($key, -1, 1) != ':')
 			$key .= ': ';
 		else
 			$key .= ' ';
 
-		$this->headers[$key] = array('value'=>(!is_object($value) && !is_array($value) ? trim($value) : $value), 'code'=>$code);
+		$this->headers[$key] = array('value'=>(!is_object($value) && !is_array($value) ? trim($value ?? '') : $value), 'code'=>$code);
 	}
 
 	public function SendUnauthorized()
@@ -329,7 +329,7 @@ class APIResponse
 		$encoded = json_encode($data);//xJson::Encode($data, false, $escapeChars, $stripChars); //DO NOT USE json_encode
 
 		//echo 'cache length : '.$cacheLength.'<br />';
-		if ($cacheLength && $cacheLength > 0 && strtoupper($_SERVER['REQUEST_METHOD']) == 'GET')
+		if ($cacheLength && $cacheLength > 0 && strtoupper($_SERVER['REQUEST_METHOD'] ?? '') == 'GET')
 		{
 			//$key = xApi::GetCacheKey();
 			//xDeveloper::Log('Setting cache for '.$key.' : '.$encoded, 'api:cache');
@@ -343,7 +343,7 @@ class APIResponse
 		$mbStrlen = mb_strlen($encoded, 'UTF-8');
 		$this->AddHeader('Content-Length', ($strlen > $mbStrlen ? $strlen : $mbStrlen));
 		
-		echo trim($encoded);
+		echo trim($encoded ?? '');
 		exit;
 	}	
 }

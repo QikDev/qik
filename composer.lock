@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/QikDev/fluentpdo.git",
-                "reference": "f832cd8d027119ca9d27fdb8e7cc6c5cc3db5e73"
+                "reference": "5cf9dc0cd0759a5bf2e4e88450d2c72de18e785c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/QikDev/fluentpdo/zipball/f832cd8d027119ca9d27fdb8e7cc6c5cc3db5e73",
-                "reference": "f832cd8d027119ca9d27fdb8e7cc6c5cc3db5e73",
+                "url": "https://api.github.com/repos/QikDev/fluentpdo/zipball/5cf9dc0cd0759a5bf2e4e88450d2c72de18e785c",
+                "reference": "5cf9dc0cd0759a5bf2e4e88450d2c72de18e785c",
                 "shasum": ""
             },
             "type": "library",
@@ -47,7 +47,7 @@
             "support": {
                 "source": "https://github.com/QikDev/fluentpdo/tree/php8"
             },
-            "time": "2023-05-15T17:36:22+00:00"
+            "time": "2023-05-15T21:46:34+00:00"
         }
     ],
     "packages-dev": [],

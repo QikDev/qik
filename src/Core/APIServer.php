@@ -47,7 +47,7 @@ class APIServer
 
 	public function RegisterController($controller) 
 	{
-		$this->controllers[strtolower(Utility::GetBaseClassNameFromNamespace(get_class($controller)))] = $controller; //store them so we can use O(1) lookups
+		$this->controllers[strtolower(Utility::GetBaseClassNameFromNamespace(get_class($controller)) ?? '')] = $controller; //store them so we can use O(1) lookups
 	}
 
 	public function RegisterDeveloper($ip = null, $name = null)
@@ -209,7 +209,7 @@ class APIServer
 			if (!$this->ParseURI())
 				throw new Resource\Invalid();
 
-			if (strtoupper($this->requestType) == 'GET')
+			if (strtoupper($this->requestType ?? '') == 'GET')
 			{
 				$key = $this->GetCacheKey();
 				//$this->SendCachedResponse();
@@ -218,10 +218,10 @@ class APIServer
 			if (is_callable($this->postCacheCallback))
 				($this->postCacheCallback)();
 
-			if (!isset($this->controllers[strtolower($this->controller)]))
+			if (!isset($this->controllers[strtolower($this->controller ?? '')]))
 				throw new Resource\NotFound();
 				
-			$this->controller = $this->controllers[strtolower($this->controller)];
+			$this->controller = $this->controllers[strtolower($this->controller ?? '')];
 
 			if (method_exists($this->controller, 'Init'))
 			{
@@ -296,7 +296,7 @@ class APIServer
 	public function ParseURI()
 	{
 		$uri = URI::GetParts('path');
-		$uri = trim($uri, '/');
+		$uri = trim($uri ?? '', '/');
 		$parts = explode('/', $uri);
 				
 		if (count($parts) < 2)

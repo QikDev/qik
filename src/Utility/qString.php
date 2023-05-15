@@ -26,7 +26,7 @@ class qString
 				}
 								     
 				// Set the character (either uppercase or lowercase) as the start of the new segment
-				$segment = strtolower($char);
+				$segment = strtolower($char ?? '');
 			} 
 			else // If the character is lowercase or special 
 			{
@@ -48,7 +48,7 @@ class qString
 	public static function LowerDashedToCamelCase($str, $firstCharLowerCase = false)
 	{
 		// make sure we're all lower
-		$str = strtolower($str);
+		$str = strtolower($str ?? '');
 		$parts = explode('-', $str);
 		$new_str = '';
 		$x = 0;
