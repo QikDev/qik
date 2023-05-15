@@ -297,7 +297,7 @@ class APIServer
 	{
 		$uri = URI::GetParts('path');
 		$uri = trim($uri ?? '', '/');
-		$parts = explode('/', $uri);
+		$parts = explode('/', $uri ?? '');
 				
 		if (count($parts) < 2)
 			throw new Resource\Invalid();

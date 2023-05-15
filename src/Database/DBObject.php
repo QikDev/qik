@@ -159,7 +159,7 @@ class DBObject implements APIObject, \IteratorAggregate
 
 		foreach ($columns as $column)
 		{
-			$attributes = explode('||', $column['Comment']);
+			$attributes = explode('||', $column['Comment'] ?? '');
 			$column['Attributes'] = array();
 
 			foreach ($attributes as $attribute)
@@ -167,7 +167,7 @@ class DBObject implements APIObject, \IteratorAggregate
 				if (empty($attribute))
 					continue;
 
-				$parts = explode('=', $attribute);
+				$parts = explode('=', $attribute ?? '');
 				$column['Attributes'][$parts[0]] = $parts[1];
 			}
 

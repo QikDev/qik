@@ -317,7 +317,7 @@ class APIRequest
 
 			if ($metaData->headers)
 			{
-				$lines = explode('\r\n', $metaData->headers);
+				$lines = explode('\r\n', $metaData->headers ?? '');
 				array_shift($lines);
 
 				foreach ($lines as $line)
@@ -325,7 +325,7 @@ class APIRequest
 					if (empty($line))
 						continue;
 
-					$parts = explode(':', $line);
+					$parts = explode(':', $line ?? '');
 
 					if (count($parts) > 2)
 					{

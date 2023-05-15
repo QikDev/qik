@@ -43,7 +43,7 @@ class DBConnection extends \PDO
 			$filename = 'query_export_'.time().'.csv';
 		else
 		{
-			$parts = explode('.', $filename);
+			$parts = explode('.', $filename ?? '');
 			$parts = array_reverse($parts);
 			if ($parts[0] != 'csv')
 				$filename.='.csv';

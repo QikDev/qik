@@ -39,7 +39,7 @@ abstract class APIController implements APIControllerInterface
 			return $this->_user;
 
 		$header = xApi::GetRequestHeaderData('Authorization');
-		$authorization = explode(' ', $header);
+		$authorization = explode(' ', $header ?? '');
 
 		if (count($authorization) < 2 || $authorization[0] != 'Bearer')
 			return new SiteUser();

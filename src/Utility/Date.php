@@ -145,10 +145,10 @@ class Date
 		if (empty($format) || $format == 'auto')
 			$format = Date::FindFormat($date, $delimiter);
 
-		$parts = explode($delimiter, $date);
+		$parts = explode($delimiter, $date ?? '');
 		
 		$dateParts = array();
-		$mask = explode('-', $format);
+		$mask = explode('-', $format ?? '');
 		foreach ($mask AS $key=>$part)
 			$dateParts[$part] = $parts[$key];
 		
@@ -183,7 +183,7 @@ class Date
 		if (empty($delimiter))
 			$delimiter = Date::FindDelimiter($date);
 			
-		$parts = explode($delimiter, $date);
+		$parts = explode($delimiter, $date ?? '');
 
 		$yearKey = null;
 		$monthKey = null;

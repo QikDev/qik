@@ -49,7 +49,7 @@ class qString
 	{
 		// make sure we're all lower
 		$str = strtolower($str ?? '');
-		$parts = explode('-', $str);
+		$parts = explode('-', $str ?? '');
 		$new_str = '';
 		$x = 0;
 		

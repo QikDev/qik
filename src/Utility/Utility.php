@@ -75,7 +75,7 @@ class Utility
 		if (is_object($namespace))
 			$namespace = get_class($namespace);
 		
-		$parts = explode('\\', $namespace);
+		$parts = explode('\\', $namespace ?? '');
 		$parts = array_reverse($parts);
 
 		return $parts[0];

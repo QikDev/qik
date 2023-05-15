@@ -59,7 +59,7 @@ class DBResult
 				if (strpos($key, '_') > -1)
 				{
 					$reversed = strrev($key);
-					$parts = explode('_', $reversed);
+					$parts = explode('_', $reversed ?? '');
 					$field = strrev(array_shift($parts));
 					$class = strrev(implode('_', $parts));
 					$subclass = '';
@@ -67,7 +67,7 @@ class DBResult
 					//we're using __ to denote aliases of the same object so we need to handle them specially
 					if (strpos($class, '__') > -1)
 					{
-						$parts = explode('__', $class);
+						$parts = explode('__', $class ?? '');
 						$class = $parts[0];
 						$subclass = $parts[1];
 					}

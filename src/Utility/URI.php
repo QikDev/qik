@@ -51,9 +51,9 @@ class URI
 	{
 		$uri = URI::GetParts('path');
 		$uri = trim($uri ?? '', '/');
-		$parts = explode('/', $uri);
+		$parts = explode('/', $uri ?? '');
 
-		$controllerParts = explode('\\', $parts[1]);
+		$controllerParts = explode('\\', $parts[1] ?? '');
 		if (count($controllerParts) <= 0)
 			return false;
 
