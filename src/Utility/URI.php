@@ -9,7 +9,7 @@ class URI
 		$uri = $_SERVER['REQUEST_URI'];	
 		$base = str_replace('?'.$_SERVER['QUERY_STRING'], '', $uri);
 		$query = http_build_query($_GET);
-		$uri = $base.(strlen($query) > 0 ? '?'.$query : '');
+		$uri = $base.(strlen($query ?? '') > 0 ? '?'.$query : '');
 		
 		return $uri;
 	}

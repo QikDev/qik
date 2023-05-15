@@ -22,7 +22,7 @@ class Validator
 			$illegalCharacters = $defaultChars . $chars;
 		}
 		
-		for ($x = 0; $x < strlen($illegalCharacters); $x++)
+		for ($x = 0; $x < strlen($illegalCharacters ?? ''); $x++)
 		{
 			if (mb_strpos($text, $illegalCharacters[$x], 0, 'UTF-8') !== false)
 			{
@@ -61,7 +61,7 @@ class Validator
 			throw new APIException($error ?? "Email address is invalid.", $errorTag);
 		
 		list( $local, $domain ) = preg_split( "/@/", $email, 2 );
-		if ( strlen($local) > 64 || strlen($domain) > 255 ) 
+		if ( strlen($local ?? '') > 64 || strlen($domain ?? '') > 255 ) 
 			throw new APIException($error ?? "Email address is invalid.", $errorTag);
 
 		if ($checkDomain)
@@ -168,7 +168,7 @@ class Validator
 		if (empty($text) || empty($maxlength))
 			return;
 		
-		if (strlen($text) > $maxlength)
+		if (strlen($text ?? '') > $maxlength)
 			throw new APIException($error ?? "The value was greater than the allowed length of $maxlength characters", $errorTag);
 		else
 			return;
@@ -179,7 +179,7 @@ class Validator
 		if (empty($text) || empty($length))
 			return;
 		
-		if (strlen($text) != $length)
+		if (strlen($text ?? '') != $length)
 		{
 			throw new APIException($error ?? "The value must be $length characters long", $errorTag);
 		}

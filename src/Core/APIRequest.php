@@ -271,7 +271,7 @@ class APIRequest
 			return false;
 		}
 		
-		$this->_contentLength = strlen($this->_builtData);
+		$this->_contentLength = strlen($this->_builtData ?? '');
 
 		if ($this->type != 'GET')
 			$this->AddHeader('Content-Length', $this->_contentLength); //content length must always be sent

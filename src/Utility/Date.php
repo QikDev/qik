@@ -189,11 +189,11 @@ class Date
 		$monthKey = null;
 		$dayKey = null;
 		
-		if (strlen($parts[0]) == 4 || (int)$parts[0] > 31)
+		if (strlen($parts[0] ?? '') == 4 || (int)$parts[0] > 31)
 			$yearKey = 0;
-		else if (strlen($parts[1]) == 4 || (int)$parts[1] > 31)
+		else if (strlen($parts[1] ?? '') == 4 || (int)$parts[1] > 31)
 			$yearKey = 1;
-		else if (strlen($parts[2]) == 4 || (int)$parts[2] > 31)
+		else if (strlen($parts[2] ?? '') == 4 || (int)$parts[2] > 31)
 			$yearKey = 2;
 
 		if ($yearKey != 0 && (int)$parts[0] > 12)
@@ -207,11 +207,11 @@ class Date
 		{
 			// everything is null. Check the length of the parts to try to find
 			// the year by process of elimination
-			if (strlen($parts[0]) == 1 && strlen($parts[1]) == 1)
+			if (strlen($parts[0] ?? '') == 1 && strlen($parts[1] ?? '') == 1)
 				$yearKey = 2;
-			if (strlen($parts[0]) == 1 && strlen($parts[1]) == 2)
+			if (strlen($parts[0] ?? '') == 1 && strlen($parts[1] ?? '') == 2)
 				$yearKey = 1;
-			if (strlen($parts[1]) == 1 && strlen($parts[2]) == 1)
+			if (strlen($parts[1] ?? '') == 1 && strlen($parts[2] ?? '') == 1)
 				$yearKey = 0;
 		}	
 			

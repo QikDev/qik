@@ -339,8 +339,8 @@ class APIResponse
 		}
 				
 		
-		$strlen = strlen($encoded);
-		$mbStrlen = mb_strlen($encoded, 'UTF-8');
+		$strlen = strlen($encoded ?? '');
+		$mbStrlen = mb_strlen($encoded ?? '', 'UTF-8');
 		$this->AddHeader('Content-Length', ($strlen > $mbStrlen ? $strlen : $mbStrlen));
 		
 		echo trim($encoded ?? '');
