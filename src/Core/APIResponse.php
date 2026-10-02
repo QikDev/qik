@@ -22,6 +22,22 @@ class APIResponse
 	{
 	}
 
+	/**
+	 * Remove call-site arguments from a debug stack trace so that secrets passed as
+	 * function arguments (signing keys, passwords, tokens) are never serialised into a
+	 * response. Keeps the useful frame data (file/line/function/class).
+	 */
+	public static function SanitizeTrace(array $trace)
+	{
+		foreach ($trace as &$frame)
+		{
+			unset($frame['args']);
+		}
+		unset($frame);
+
+		return $trace;
+	}
+
 	public function SetError($thrown = null)
 	{
 		if (!is_object($thrown))
@@ -56,7 +72,10 @@ class APIResponse
 
 		if (APIServer::IsClientDeveloper())
 		{
-			$error['trace'] = $thrown->getTrace();
+			// SECURITY: never expose call-site arguments. A raw getTrace() frame carries
+			// the arguments every function on the stack was called with, which can include
+			// secrets (e.g. a signing key passed to JWT::sign). Strip them before exposing.
+			$error['trace'] = self::SanitizeTrace($thrown->getTrace());
 			$error['internalMessage'] = method_exists($thrown, 'getInternalMessage') ? $thrown->getInternalMessage() : $thrown->getMessage();
 		}
 

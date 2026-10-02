@@ -10,6 +10,13 @@ use Qik\Exceptions\{Resource, Internal};
 
 class APIServer
 {
+	/**
+	 * The ONLY environments in which developer/debug features are enabled. Membership is a
+	 * positive allowlist: any other value — including an unset, misspelled, or mis-cased
+	 * SITE_ENV — is treated as production, so a misconfigured environment fails safe.
+	 */
+	const DEVELOPER_ENVS = array('local', 'development');
+
 	private static $clientIp;
 	private static $clientIpSource;
 	private static $developers = array();
@@ -50,6 +57,11 @@ class APIServer
 		$this->controllers[strtolower(Utility::GetBaseClassNameFromNamespace(get_class($controller)) ?? '')] = $controller; //store them so we can use O(1) lookups
 	}
 
+	/**
+	 * @deprecated Developer/debug mode is now gated on the environment only (see
+	 * IsClientDeveloper/IsDevelopment). Registering an IP no longer grants developer access;
+	 * this is retained only for backwards compatibility with existing bootstrap code.
+	 */
 	public function RegisterDeveloper($ip = null, $name = null)
 	{
 		return self::$developers[$ip] = new class ($ip, $name) {
@@ -65,7 +77,13 @@ class APIServer
 
 	public static function GetEnv()
 	{
-		return APIConfig::ENV;
+		// Environment is determined server-side only, from the runtime SITE_ENV variable.
+		// Default to the safe value ('production') when it is unset so that debug/developer
+		// features are never enabled by accident.
+		$env = $_ENV['SITE_ENV'] ?? getenv('SITE_ENV');
+		$env = is_string($env) ? strtolower(trim($env)) : '';
+
+		return $env !== '' ? $env : 'production';
 	}
 
 	public static function IsLocal()
@@ -75,7 +93,9 @@ class APIServer
 
 	public static function IsDevelopment()
 	{
-		return self::IsLocal() || self::GetEnv() === 'development';
+		// Positive allowlist: only the explicitly-listed developer environments count.
+		// Everything else (production, stage, unset, typos, ...) is treated as production.
+		return in_array(self::GetEnv(), self::DEVELOPER_ENVS, true);
 	}
 
 	public static function IsProduction()
@@ -83,12 +103,13 @@ class APIServer
 		return self::GetEnv() === 'production';
 	}
 
-	public static function IsClientDeveloper($ip = null) 
+	public static function IsClientDeveloper($ip = null)
 	{
-		if (empty($ip))
-			$ip = self::GetClientIP();
-
-		return isset(self::$developers[$ip]) ? self::$developers[$ip] : false;
+		// SECURITY: developer/debug mode is a privilege decision and is gated on the
+		// server-side environment ONLY (see GetEnv/IsDevelopment) — never on the client IP,
+		// which is derived from spoofable forwarded headers (Client-IP, X-Forwarded-For, ...).
+		// The $ip parameter is retained for backwards compatibility but is ignored.
+		return self::IsDevelopment();
 	}
 
 	public function GetRequestHeaderData($key = null)
