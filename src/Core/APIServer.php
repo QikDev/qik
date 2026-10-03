@@ -17,6 +17,13 @@ class APIServer
 	 */
 	const DEVELOPER_ENVS = array('local', 'development');
 
+	/**
+	 * The ONLY HTTP verbs that may be dispatched. The verb is concatenated onto the command to
+	 * form the controller method name, so an arbitrary verb (e.g. "GETLOCALUSER" with an empty
+	 * command) would otherwise let a client invoke any public controller method by name.
+	 */
+	const ALLOWED_METHODS = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD');
+
 	private static $clientIp;
 	private static $clientIpSource;
 	private static $developers = array();
@@ -337,8 +344,12 @@ class APIServer
 
 		$this->command = qString::LowerDashedToCamelCase($this->command);
 
-		$this->requestType = $_SERVER['REQUEST_METHOD'];
-		
+		$requestType = strtoupper($_SERVER['REQUEST_METHOD'] ?? '');
+		if (!in_array($requestType, self::ALLOWED_METHODS, true))
+			throw new Resource\MethodNotAllowed();
+
+		$this->requestType = $requestType;
+
 		return true;
 	}
 }
