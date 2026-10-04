@@ -274,44 +274,55 @@ class APIServer
 	{
 		if (isset(self::$clientIp))
 			return self::$clientIp;
+
+		if (!empty($_SERVER['HTTP_TRUE_CLIENT_IP']))
+		{
+			// Akamai's real-client header (edge-set, a single address). Replaced the former
+			// first slot, Incapsula's HTTP_INCAP_CLIENT_IP, dropped when Incapsula left the stack.
+			$ip = $_SERVER['HTTP_TRUE_CLIENT_IP'];
+			$source = 'HTTP_TRUE_CLIENT_IP';
+		}
+		else if (!empty($_SERVER["HTTP_X_CLUSTER_CLIENT_IP"]))
+		{
+			// if behind a load balancer
+			$ip = $_SERVER["HTTP_X_CLUSTER_CLIENT_IP"];
+			$source = "HTTP_X_CLUSTER_CLIENT_IP";
+		}
+		else if (!empty($_SERVER['HTTP_CLIENT_IP']))
+		{
+			//check ip from share internet
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+			$source = 'HTTP_CLIENT_IP';
+		}
+		else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+		{
+			//to check ip is pass from proxy
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			$source = 'HTTP_X_FORWARDED_FOR';
+		}
 		else
 		{
-			if (isset($_SERVER['HTTP_INCAP_CLIENT_IP']) && !empty($_SERVER['HTTP_INCAP_CLIENT_IP']))
-			{
-				// incapsula IP
-				$ip = $_SERVER['HTTP_INCAP_CLIENT_IP'];
-				$source = 'HTTP_INCAP_CLIENT_IP';
-			}
-			else if (isset($_SERVER["HTTP_X_CLUSTER_CLIENT_IP"]) && !empty($_SERVER["HTTP_X_CLUSTER_CLIENT_IP"]))
-			{
-				// if behind a load balancer
-				$ip = $_SERVER["HTTP_X_CLUSTER_CLIENT_IP"];
-				$source = "HTTP_X_CLUSTER_CLIENT_IP";
-			}
-			else if (!empty($_SERVER['HTTP_CLIENT_IP']))   
-			{
-				//check ip from share internet
-				$ip = $_SERVER['HTTP_CLIENT_IP'];
-				$source = 'HTTP_CLIENT_IP';
-			}
-			else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))  
-			{
-				//to check ip is pass from proxy
-				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-				$source = 'HTTP_X_FORWARDED_FOR';
-			}
-			else
-			{
-				$ip = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
-				if (isset($_SERVER['REMOTE_ADDR']))
-					$source = 'REMOTE_ADDR';
-				else
-					$source = 'none';
-			}
-			
-			self::$clientIpSource = $source;
-			self::$clientIp = $ip;
+			$ip = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
+			$source = isset($_SERVER['REMOTE_ADDR']) ? 'REMOTE_ADDR' : 'none';
 		}
+
+		// Collapse a comma-separated chain (e.g. a multi-hop X-Forwarded-For seen from dev over
+		// a VPN) to its LEFT-most entry: the originating client, since each proxy appends on the
+		// right. In production the winning value is already a single IP, so this is a no-op.
+		// Fall back to the real TCP peer when the left-most is not a valid IP.
+		$leftMost = trim(explode(',', $ip)[0]);
+		if (filter_var($leftMost, FILTER_VALIDATE_IP) !== false)
+		{
+			$ip = $leftMost;
+		}
+		else if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false)
+		{
+			$ip = $_SERVER['REMOTE_ADDR'];
+			$source = 'REMOTE_ADDR';
+		}
+
+		self::$clientIpSource = $source;
+		self::$clientIp = $ip;
 
 		return $ip;
 	}
